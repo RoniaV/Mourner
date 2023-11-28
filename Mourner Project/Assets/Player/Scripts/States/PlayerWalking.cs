@@ -11,6 +11,7 @@ public class PlayerWalking : State
     private CharacterFloorMovement characterFloorMovement;
     private CharacterAim characterAim;
     private Transform camera;
+    private Animator animator;
 
     private Vector2 inputValue = Vector2.zero;
     private Vector3 movDirection = Vector3.zero;
@@ -21,7 +22,8 @@ public class PlayerWalking : State
         InputAction aimAction,
         CharacterFloorMovement characterFloorMovement,
         CharacterAim characterAim,
-        Transform camera
+        Transform camera,
+        Animator animator
         ) : base(fSM) 
     {
         this.walkingAction = walkingAction;
@@ -29,6 +31,7 @@ public class PlayerWalking : State
         this.characterFloorMovement = characterFloorMovement;
         this.characterAim = characterAim;
         this.camera = camera;
+        this.animator = animator;
     }
 
     public override void EnterState()
@@ -60,5 +63,8 @@ public class PlayerWalking : State
 
         characterFloorMovement.SetMovementDirection(fixedDir);
         characterAim.RotateCharacter(aimAction.ReadValue<Vector2>());
+
+        animator.SetFloat("XDir", inputValue.x);
+        animator.SetFloat("YDir", inputValue.y);
     }
 }

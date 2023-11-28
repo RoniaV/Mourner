@@ -15,6 +15,7 @@ public class PlayerFSM : FSM
     [Header("Components")]
     [SerializeField] CharacterAim characterAim;
     [SerializeField] Transform playerCamera;
+    [SerializeField] Animator characterAnimator;
     [Header("State Settings")]
     [SerializeField] PlayerStates initialState = PlayerStates.Walking;
     [Header("Input Settings")]
@@ -41,7 +42,8 @@ public class PlayerFSM : FSM
             aimAction,
             floorMovement,
             characterAim,
-            playerCamera);
+            playerCamera,
+            characterAnimator);
 
         ChangeState((int)initialState);
     }
