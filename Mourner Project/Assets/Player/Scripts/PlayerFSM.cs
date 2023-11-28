@@ -33,19 +33,36 @@ public class PlayerFSM : FSM
     {
         walkingState = new PlayerWalking((FSM)this, walkingAction, floorMovement);
 
+        ChangeState((int)initialState);
+    }
 
-        switch(initialState)
-        {
-            case PlayerStates.Walking:
-                
-                break;
-            case PlayerStates.Running:
-                break;
-        }
+    void FixedUpdate()
+    {
+        actualState?.FixedUpdateState();
+    }
+
+    void Update()
+    {
+        actualState?.UpdateState();
     }
 
     public override void ChangeState(int state)
     {
-        
+        if (actualState != null)
+            actualState.ExitState();
+
+        switch (state)
+        {
+            case (int)PlayerStates.Walking:
+                actualState = walkingState;
+                actualState.EnterState();
+                break;
+            case (int)PlayerStates.Running:
+                break;
+            default:
+                Debug.Log("Non existent state");
+                ChangeState((int)PlayerStates.Walking);
+                break;
+        }
     }
 }

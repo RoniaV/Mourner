@@ -18,7 +18,9 @@ public class CharacterFloorMovement : CharacterMovement
 
     protected override void FixedUpdate()
     {
+        Debug.Log("Movement Direction: " + movementDirection);
         movementDirection = ProjectMovementOnGround(movementDirection);
+        Debug.Log("Projected Movement Direction: " + movementDirection);
 
         Debug.DrawLine(transform.position, transform.position + (movementDirection * 2), Color.blue);
 
@@ -29,24 +31,30 @@ public class CharacterFloorMovement : CharacterMovement
     {
         RaycastHit groundHit = characterGravitable.GetGroundHit();
 
-        if (GroundWalkable(groundHit))
+        if (IsOnSlope(groundHit))
+        {
+            Debug.Log("Pojected on plane");
             return Vector3.ProjectOnPlane(movement, groundHit.normal).normalized;
+        }
 
         else
+        {
+            Debug.Log("Not projected");
             return movement;
+        }
     }
 
-    protected bool GroundWalkable(RaycastHit groundHit)
+    protected bool IsOnSlope(RaycastHit groundHit)
     {
         if (groundHit.collider != null)
         {
             //Check slope
             Vector3 localNormal = groundHit.normal.normalized;
             float angle = Vector3.Angle(Vector3.up, localNormal);
-            bool isOnValidGround = angle < maxSlope;
+            bool isOnValidSlope = angle < maxSlope && angle != 0;
 
             Debug.DrawRay(groundHit.transform.position, localNormal, Color.red);
-            return isOnValidGround;
+            return isOnValidSlope;
         }
         else
         {
