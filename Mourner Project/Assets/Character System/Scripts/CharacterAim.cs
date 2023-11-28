@@ -13,7 +13,7 @@ public class CharacterAim : MonoBehaviour
 
     protected Vector2 aim;
 
-    protected virtual void FixedUpdate()
+    protected virtual void Update()
     {
         body.Rotate(
             0,

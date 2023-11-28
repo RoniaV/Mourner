@@ -12,10 +12,14 @@ public class PlayerFSM : FSM
         Running
     }
 
-
+    [Header("Components")]
+    [SerializeField] CharacterAim characterAim;
+    [SerializeField] Transform playerCamera;
+    [Header("State Settings")]
     [SerializeField] PlayerStates initialState = PlayerStates.Walking;
     [Header("Input Settings")]
     [SerializeField] InputAction walkingAction;
+    [SerializeField] InputAction aimAction;
 
     CharacterFloorMovement floorMovement;
 
@@ -31,7 +35,13 @@ public class PlayerFSM : FSM
 
     void Start()
     {
-        walkingState = new PlayerWalking((FSM)this, walkingAction, floorMovement);
+        walkingState = new PlayerWalking(
+            this,
+            walkingAction,
+            aimAction,
+            floorMovement,
+            characterAim,
+            playerCamera);
 
         ChangeState((int)initialState);
     }
