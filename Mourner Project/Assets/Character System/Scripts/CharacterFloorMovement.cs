@@ -30,7 +30,7 @@ public class CharacterFloorMovement : CharacterMovement
         RaycastHit groundHit = characterGravitable.GetGroundHit();
 
         if (IsOnSlope(groundHit))
-            return Vector3.ProjectOnPlane(movement, groundHit.normal).normalized;
+            return Vector3.ProjectOnPlane(movement, groundHit.normal);
 
         else
             return movement;

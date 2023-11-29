@@ -18,9 +18,10 @@ public class PlayerFSM : FSM
     [SerializeField] Animator characterAnimator;
     [Header("State Settings")]
     [SerializeField] PlayerStates initialState = PlayerStates.Walking;
-    [Header("Input Settings")]
+    [Header("Walk Settings")]
     [SerializeField] InputAction walkingAction;
     [SerializeField] InputAction aimAction;
+    [SerializeField] float smoothTime = .5f;
 
     CharacterFloorMovement floorMovement;
 
@@ -38,8 +39,10 @@ public class PlayerFSM : FSM
     {
         walkingState = new PlayerWalking(
             this,
+            transform,
             walkingAction,
             aimAction,
+            smoothTime,
             floorMovement,
             characterAim,
             playerCamera,
