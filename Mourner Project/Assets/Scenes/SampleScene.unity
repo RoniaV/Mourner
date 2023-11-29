@@ -223,7 +223,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 2f456ec4837db5e4bafe607f1f5f2f73, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.1
+      value: -0.25
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 2f456ec4837db5e4bafe607f1f5f2f73, type: 3}
       propertyPath: m_LocalPosition.z
@@ -2070,7 +2070,7 @@ CharacterController:
   m_Radius: 0.25
   m_SlopeLimit: 45
   m_StepOffset: 0.3
-  m_SkinWidth: 0.08
+  m_SkinWidth: 0.15
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 1, z: 0}
 --- !u!114 &1736342226

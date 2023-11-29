@@ -18,12 +18,11 @@ public class CheckGrounded
         this.groundMask = groundMask;
     }
 
-    public CheckGrounded(Transform groundPoint, LayerMask groundMask, float range, Vector3 boxcastHalfExtents)
+    public CheckGrounded(Transform groundPoint, LayerMask groundMask, float range)
     {
         this.groundPoint = groundPoint;
         this.groundMask = groundMask;
         this.range = range;
-        this.boxcastHalfExtents = boxcastHalfExtents;
     }
 
     public bool IsGrounded()
