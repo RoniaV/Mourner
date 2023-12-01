@@ -5,55 +5,146 @@ using UnityEngine;
 public class IKFootPlacement : MonoBehaviour 
 {
     [SerializeField] LayerMask walkableLayers; // Select all layers that foot placement applies to.
+    [SerializeField] Transform leftFoot;
+    [SerializeField] Transform rightFoot;
+    [Tooltip("Maximum local altitude the body can be")]
+    [SerializeField] float maxBodyHeight = -0.1f;
+    [Tooltip("Maximum distance can be between feets")]
+    [SerializeField] float maxFootDistance = 0.5f;
     [Range (0, 1f)]
-    [SerializeField] float DistanceToGround; // Distance from where the foot transform is to the lowest possible position of the foot.
+    [SerializeField] float distanceToGround = 0.1f; // Distance from where the foot transform is to the lowest possible position of the foot.
 
     Animator anim;
+
+    private CheckGrounded leftFootGrounded;
+    private CheckGrounded rightFootGrounded;
 
     void Awake() 
     {
         anim = GetComponent<Animator>();
+        leftFootGrounded = new CheckGrounded(leftFoot, walkableLayers, distanceToGround * 2, distanceToGround);
+        rightFootGrounded = new CheckGrounded(rightFoot, walkableLayers, distanceToGround * 2, distanceToGround);
     }
 
     private void OnAnimatorIK(int layerIndex) 
-    {
-        Debug.Log("IK");
+    { 
         // Only carry out the following code if there is an Animator set.
         if (anim) 
         {
-            // Set the weights of left and right feet to the current value defined by the curve in our animations.
-            anim.SetIKPositionWeight(AvatarIKGoal.LeftFoot, anim.GetFloat("IKLeftFootWeight"));
-            anim.SetIKRotationWeight(AvatarIKGoal.LeftFoot, anim.GetFloat("IKLeftFootWeight"));
-            anim.SetIKPositionWeight(AvatarIKGoal.RightFoot, anim.GetFloat("IKRightFootWeight"));
-            anim.SetIKRotationWeight(AvatarIKGoal.RightFoot, anim.GetFloat("IKRightFootWeight"));
+            //Get weights
+            float leftFootWeight = anim.GetFloat("IKLeftFootWeight");
+            float rightFootWeight = anim.GetFloat("IKRightFootWeight");
 
-            // Left Foot
             RaycastHit hit;
 
-            // We cast our ray from above the foot in case the current terrain/floor is above the foot position.
-            Ray ray = new Ray(anim.GetIKPosition(AvatarIKGoal.LeftFoot) + Vector3.up, Vector3.down);
-
-            if (Physics.Raycast(ray, out hit, DistanceToGround + 1f, walkableLayers))
+            //If feet are already touching the ground apply IK...
+            Physics.SphereCast(
+                leftFoot.position + Vector3.up * maxFootDistance,
+                distanceToGround,
+                Vector3.down,
+                out hit,
+                maxFootDistance + distanceToGround * 2,
+                walkableLayers);
+            if (leftFoot.position.y < hit.point.y || Mathf.Abs(leftFoot.position.y - hit.point.y) <= distanceToGround)
             {
-                Vector3 footPosition = hit.point; // The target foot position is where the raycast hit a walkable object...
-                footPosition.y += DistanceToGround; // ... taking account the distance to the ground we added above.
-                anim.SetIKPosition(AvatarIKGoal.LeftFoot, footPosition);
+                anim.SetIKPositionWeight(AvatarIKGoal.LeftFoot, 1);
+                anim.SetIKRotationWeight(AvatarIKGoal.LeftFoot, 1);
+            }
+            //... else set the weights of left and right feet to the current value defined by the curve in animations.
+            else
+            {
+                anim.SetIKPositionWeight(AvatarIKGoal.LeftFoot, leftFootWeight);
+                anim.SetIKRotationWeight(AvatarIKGoal.LeftFoot, leftFootWeight);
+            }
+
+            Physics.SphereCast(
+                rightFoot.position + Vector3.up * maxFootDistance,
+                distanceToGround,
+                Vector3.down,
+                out hit,
+                maxFootDistance + distanceToGround * 2,
+                walkableLayers);
+            if (rightFoot.position.y < hit.point.y || Mathf.Abs(rightFoot.position.y - hit.point.y) <= distanceToGround)
+            {
+                anim.SetIKPositionWeight(AvatarIKGoal.RightFoot, 1);
+                anim.SetIKRotationWeight(AvatarIKGoal.RightFoot, 1);
+            }
+            else
+            {
+                anim.SetIKPositionWeight(AvatarIKGoal.RightFoot, rightFootWeight);
+                anim.SetIKRotationWeight(AvatarIKGoal.RightFoot, rightFootWeight);
+            }
+
+            // Left Foot
+            
+            // We cast our ray from above the foot in case the current terrain/floor is above the foot position.
+            Ray ray = new Ray(anim.GetIKPosition(AvatarIKGoal.LeftFoot) + Vector3.up * maxFootDistance, Vector3.down);
+            Debug.DrawRay(ray.origin, ray.direction, Color.yellow);
+
+            Vector3 leftFootDesiredPos = Vector3.zero;
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, walkableLayers))
+            {
+                leftFootDesiredPos = hit.point; // The target foot position is where the raycast hit a walkable object...
+                leftFootDesiredPos.y += distanceToGround; // ... taking account the distance to the ground we added above.
+                anim.SetIKPosition(AvatarIKGoal.LeftFoot, leftFootDesiredPos);
                 Vector3 forward = Vector3.ProjectOnPlane(transform.forward, hit.normal);
                 anim.SetIKRotation(AvatarIKGoal.LeftFoot, Quaternion.LookRotation(forward, hit.normal));
             }
 
             // Right Foot
-            ray = new Ray(anim.GetIKPosition(AvatarIKGoal.RightFoot) + Vector3.up, Vector3.down);
+            ray = new Ray(anim.GetIKPosition(AvatarIKGoal.RightFoot) + Vector3.up * maxFootDistance, Vector3.down);
+            Debug.DrawRay(ray.origin, ray.direction, Color.yellow);
 
-            if (Physics.Raycast(ray, out hit, DistanceToGround + 1f, walkableLayers)) 
+            Vector3 rightFootDesiredPos = Vector3.zero;
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, walkableLayers)) 
             {
-                Vector3 footPosition = hit.point;
-                footPosition.y += DistanceToGround;
-                anim.SetIKPosition(AvatarIKGoal.RightFoot, footPosition); 
+                rightFootDesiredPos = hit.point;
+                rightFootDesiredPos.y += distanceToGround;
+                anim.SetIKPosition(AvatarIKGoal.RightFoot, rightFootDesiredPos); 
                 Vector3 forward = Vector3.ProjectOnPlane(transform.forward, hit.normal);
                 anim.SetIKRotation(AvatarIKGoal.RightFoot, Quaternion.LookRotation(forward, hit.normal));
+            }            
+
+            //If distance between feets are lower than the maximum distance...
+            if(Mathf.Abs(leftFootDesiredPos.y - rightFootDesiredPos.y) < maxFootDistance)
+            {
+                //... sets body position on the lowest foot.
+                Vector3 fixedPosition = transform.position;
+
+                if (leftFootDesiredPos.y <= rightFootDesiredPos.y)
+                    fixedPosition.y = leftFootDesiredPos.y;
+                else
+                    fixedPosition.y = rightFootDesiredPos.y;
+
+                transform.position = fixedPosition;
             }
+            //Else if the distance is higher...
+            else
+            {
+                //... sets body position on the highest foot.
+                Vector3 fixedPosition = transform.position;
+
+                if (leftFootDesiredPos.y >= rightFootDesiredPos.y)
+                    fixedPosition.y = leftFootDesiredPos.y;
+                else
+                    fixedPosition.y = rightFootDesiredPos.y;
+
+                transform.position = fixedPosition;
+            }
+
+
+            //Body position can not be higher than its maximum defined height
+            Vector3 localPos = transform.localPosition;
+            if (localPos.y > maxBodyHeight)
+                localPos.y = maxBodyHeight;
+            transform.localPosition = localPos;
         }
+    }
+
+    void OnDrawGizmosSelected()
+    {
+        leftFootGrounded?.DrawSphereGizmos();
+        rightFootGrounded?.DrawSphereGizmos();
     }
 
 }

@@ -18,11 +18,12 @@ public class CheckGrounded
         this.groundMask = groundMask;
     }
 
-    public CheckGrounded(Transform groundPoint, LayerMask groundMask, float range)
+    public CheckGrounded(Transform groundPoint, LayerMask groundMask, float range, float radius)
     {
         this.groundPoint = groundPoint;
         this.groundMask = groundMask;
         this.range = range;
+        sphereCastRadius = radius;
     }
 
     public bool IsGrounded()
@@ -30,9 +31,9 @@ public class CheckGrounded
         RaycastHit hit;
 
         bool isGrounded = Physics.SphereCast(
-            groundPoint.position + groundPoint.up * sphereCastRadius,
+            groundPoint.position + Vector3.up * sphereCastRadius,
             sphereCastRadius,
-            -groundPoint.up * range,
+            Vector3.down * range,
             out hit,
             range,
             groundMask);
@@ -80,30 +81,30 @@ public class CheckGrounded
 
     public void DrawSphereGizmos()
     {
-        Gizmos.DrawWireSphere(groundPoint.position, range);
+        //Gizmos.DrawWireSphere(groundPoint.position, range);
 
         RaycastHit hit;
 
         if (Physics.SphereCast(
-            groundPoint.position + groundPoint.up * sphereCastRadius,
+            groundPoint.position + Vector3.up * sphereCastRadius,
             sphereCastRadius,
-            -groundPoint.up * range,
+            Vector3.down * range,
             out hit,
             range,
             groundMask))
         {
             Gizmos.color = Color.green;
-            Vector3 sphereCastMidpoint = groundPoint.position + (groundPoint.up * sphereCastRadius) + (-groundPoint.up * hit.distance);
+            Vector3 sphereCastMidpoint = groundPoint.position + (Vector3.up * sphereCastRadius) + (Vector3.down * hit.distance);
             Gizmos.DrawWireSphere(sphereCastMidpoint, sphereCastRadius);
-            Gizmos.DrawSphere(hit.point, 0.1f);
-            Debug.DrawLine(groundPoint.position + groundPoint.up * sphereCastRadius, sphereCastMidpoint, Color.green);
+            Gizmos.DrawSphere(hit.point, sphereCastRadius / 5);
+            Debug.DrawLine(groundPoint.position + Vector3.up * sphereCastRadius, sphereCastMidpoint, Color.green);
         }
         else
         {
             Gizmos.color = Color.red;
-            Vector3 sphereCastMidpoint = groundPoint.position + (groundPoint.up * sphereCastRadius) + (-groundPoint.up * range);
+            Vector3 sphereCastMidpoint = groundPoint.position + (Vector3.up * sphereCastRadius) + (Vector3.down * range);
             Gizmos.DrawWireSphere(sphereCastMidpoint, sphereCastRadius);
-            Debug.DrawLine(groundPoint.position + groundPoint.up * sphereCastRadius, sphereCastMidpoint, Color.red);
+            Debug.DrawLine(groundPoint.position + Vector3.up * sphereCastRadius, sphereCastMidpoint, Color.red);
         }
     }
 }

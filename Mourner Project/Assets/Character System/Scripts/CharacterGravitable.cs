@@ -17,7 +17,7 @@ public class CharacterGravitable : MonoBehaviour
     void Awake()
     {
         characterController = GetComponent<CharacterController>();
-        grounded = new CheckGrounded(transform, groundLayer, characterController.skinWidth + 0.05f);
+        grounded = new CheckGrounded(transform, groundLayer, characterController.skinWidth + 0.05f, characterController.radius);
     }
 
     void FixedUpdate()
