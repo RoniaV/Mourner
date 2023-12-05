@@ -942,6 +942,7 @@ MonoBehaviour:
   maxBodyHeight: -0.1
   maxFootDistance: 0.5
   distanceToGround: 0.07
+  bodySmoothTime: 0.3
 --- !u!1 &426914702
 GameObject:
   m_ObjectHideFlags: 0
@@ -1967,6 +1968,7 @@ MonoBehaviour:
   maxBodyHeight: -0.1
   maxFootDistance: 0.5
   distanceToGround: 0.07
+  bodySmoothTime: 0.5
 --- !u!1 &1191607806
 GameObject:
   m_ObjectHideFlags: 0
@@ -2394,13 +2396,13 @@ CharacterController:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Height: 2
-  m_Radius: 0.25
+  m_Height: 1.6
+  m_Radius: 0.15
   m_SlopeLimit: 45
-  m_StepOffset: 0.3
+  m_StepOffset: 0.2
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 1, z: 0}
+  m_Center: {x: 0, y: 0.8, z: 0}
 --- !u!114 &1736342226
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2462,73 +2464,7 @@ MonoBehaviour:
   playerCamera: {fileID: 1229677613}
   characterAnimator: {fileID: 400517993}
   initialState: 0
-  walkingAction:
-    m_Name: Walking
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 2f247ba6-1d2d-48ff-9497-aabe26d061a0
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings:
-    - m_Name: WASD
-      m_Id: cd32c352-2bf6-4360-99de-dd4a54b61b45
-      m_Path: 2DVector
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Walking
-      m_Flags: 4
-    - m_Name: up
-      m_Id: 73634a84-7939-4cc3-a835-41303a636b42
-      m_Path: <Keyboard>/w
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Walking
-      m_Flags: 8
-    - m_Name: down
-      m_Id: 9a63a72a-617b-4929-942e-7316769d19f9
-      m_Path: <Keyboard>/s
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Walking
-      m_Flags: 8
-    - m_Name: left
-      m_Id: 5450eca8-cf75-40fd-947c-07bec8fd5e83
-      m_Path: <Keyboard>/a
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Walking
-      m_Flags: 8
-    - m_Name: right
-      m_Id: 9b748458-751f-4474-89f6-c8b76e3a024b
-      m_Path: <Keyboard>/d
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Walking
-      m_Flags: 8
-    m_Flags: 0
-  aimAction:
-    m_Name: Aim
-    m_Type: 2
-    m_ExpectedControlType: Vector2
-    m_Id: 52d459b8-83cb-4294-9986-962feda1428f
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings:
-    - m_Name: 
-      m_Id: 733760e1-1de4-4504-9496-bcd4676c7dc8
-      m_Path: <Mouse>/delta
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Aim
-      m_Flags: 0
-    m_Flags: 0
-  smoothTime: 0.1
+  walkSettings: {fileID: 11400000, guid: 855990c8915c56143b1b997cb1068db1, type: 2}
 --- !u!4 &1854863851 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -6874584590210671055, guid: 2f456ec4837db5e4bafe607f1f5f2f73, type: 3}

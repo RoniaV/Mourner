@@ -8,6 +8,7 @@ public class PlayerFSM : FSM
 {
     public enum PlayerStates
     {
+        Idle,
         Walking,
         Running
     }
@@ -17,11 +18,8 @@ public class PlayerFSM : FSM
     [SerializeField] Transform playerCamera;
     [SerializeField] Animator characterAnimator;
     [Header("State Settings")]
-    [SerializeField] PlayerStates initialState = PlayerStates.Walking;
-    [Header("Walk Settings")]
-    [SerializeField] InputAction walkingAction;
-    [SerializeField] InputAction aimAction;
-    [SerializeField] float smoothTime = .5f;
+    [SerializeField] PlayerStates initialState = PlayerStates.Idle;
+    [SerializeField] WalkSettings walkSettings;
 
     CharacterFloorMovement floorMovement;
 
@@ -39,10 +37,8 @@ public class PlayerFSM : FSM
     {
         walkingState = new PlayerWalking(
             this,
+            walkSettings,
             transform,
-            walkingAction,
-            aimAction,
-            smoothTime,
             floorMovement,
             characterAim,
             playerCamera,
