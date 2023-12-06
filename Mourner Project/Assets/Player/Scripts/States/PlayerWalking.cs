@@ -11,7 +11,6 @@ public class PlayerWalking : State
     private CharacterFloorMovement characterFloorMovement;
     private CharacterAim characterAim;
     private Transform camera;
-    private Animator animator;
 
     private Vector2 smoothInputValue = Vector2.zero;
     private Vector2 smoothInputVelocity;
@@ -23,8 +22,7 @@ public class PlayerWalking : State
         Transform player,
         CharacterFloorMovement characterFloorMovement,
         CharacterAim characterAim,
-        Transform camera,
-        Animator animator
+        Transform camera
         ) : base(fSM) 
     {
         this.player = player;
@@ -32,11 +30,14 @@ public class PlayerWalking : State
         this.characterFloorMovement = characterFloorMovement;
         this.characterAim = characterAim;
         this.camera = camera;
-        this.animator = animator;
     }
 
     public override void EnterState()
     {
+        Debug.Log("Enter Walk State");
+
+        characterFloorMovement.SetVelocity(walkSettings.WalkSpeed);
+
         walkSettings.WalkingAction.Enable(); 
         walkSettings.AimAction.Enable();
         walkSettings.RunAction.Enable();
@@ -44,6 +45,11 @@ public class PlayerWalking : State
 
     public override void ExitState()
     {
+        Debug.Log("Exit Walk State");
+
+        smoothInputValue = Vector2.zero;
+        smoothInputVelocity = Vector2.zero;
+
         walkSettings.WalkingAction.Disable();
         walkSettings.AimAction.Disable();
         walkSettings.RunAction.Disable();
@@ -68,17 +74,19 @@ public class PlayerWalking : State
         //Set mov and aim directions
         if (fixedDir != Vector3.zero)
             player.rotation = Quaternion.LookRotation(fixedDir, Vector3.up);
-        characterFloorMovement.SetMovementDirection(fixedDir);
+        characterFloorMovement.SetMovementDirection(fixedDir.normalized);
         characterAim.RotateCharacter(walkSettings.AimAction.ReadValue<Vector2>());
 
-        //Check and set run speed
-        bool runInput = walkSettings.RunAction.IsPressed();
-        float movSpeed = 
-            runInput ? walkSettings.RunSpeed : walkSettings.WalkSpeed;
-        characterFloorMovement.ModifyVelocity(movSpeed * smoothInputValue.magnitude);
 
-        //Set animations
-        float animValue = smoothInputValue.magnitude * (runInput ? 1 : 0.5f);
-        animator.SetFloat("Vel", animValue);
+        //Check for Idle transition  
+        if(inputValue.magnitude < 0.5f)
+        {
+            fSM.ChangeState((int)PlayerFSM.PlayerStates.Idle);
+        }
+        //Check for Running transition
+        else if(walkSettings.RunAction.IsPressed())
+        {
+            fSM.ChangeState((int)PlayerFSM.PlayerStates.Running);
+        }
     }
 }

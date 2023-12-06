@@ -30,6 +30,6 @@ public class CharacterCrouch : MonoBehaviour
         Crouched = !Crouched;
 
         charController.height = Crouched ? originalHeight / 2 : originalHeight;
-        charMovement.ModifyVelocity(Crouched ? crouchedVelocity : 0);
+        charMovement.SetVelocity(Crouched ? crouchedVelocity : 0);
     }
 }

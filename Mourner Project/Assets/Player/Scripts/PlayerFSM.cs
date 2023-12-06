@@ -19,30 +19,54 @@ public class PlayerFSM : FSM
     [SerializeField] Animator characterAnimator;
     [Header("State Settings")]
     [SerializeField] PlayerStates initialState = PlayerStates.Idle;
+    [SerializeField] IdleSettings idleSettings;
     [SerializeField] WalkSettings walkSettings;
+    [SerializeField] RunSettings runSettings;
 
+    CharacterController characterController;
     CharacterFloorMovement floorMovement;
 
     private State actualState;
     //States
+    private PlayerIdle idleState;
     private PlayerWalking walkingState;
+    private PlayerRunning runningState;
 
 
     void Awake()
     {
         floorMovement = GetComponent<CharacterFloorMovement>();
+        characterController = GetComponent<CharacterController>();
     }
 
     void Start()
     {
+        idleState = new PlayerIdle(
+            this,
+            idleSettings,
+            floorMovement,
+            characterAim,
+            characterAnimator
+            );
+
         walkingState = new PlayerWalking(
             this,
             walkSettings,
             transform,
             floorMovement,
             characterAim,
-            playerCamera,
-            characterAnimator);
+            playerCamera
+            );
+
+        runningState = new PlayerRunning(
+            this,
+            runSettings,
+            transform,
+            floorMovement,
+            characterAim,
+            playerCamera
+            );
+
 
         ChangeState((int)initialState);
     }
@@ -55,6 +79,7 @@ public class PlayerFSM : FSM
     void Update()
     {
         actualState?.UpdateState();
+        characterAnimator.SetFloat("Vel", characterController.velocity.magnitude);
     }
 
     public override void ChangeState(int state)
@@ -64,16 +89,21 @@ public class PlayerFSM : FSM
 
         switch (state)
         {
+            case (int)PlayerStates.Idle:
+                actualState = idleState;
+                break;
             case (int)PlayerStates.Walking:
                 actualState = walkingState;
-                actualState.EnterState();
                 break;
             case (int)PlayerStates.Running:
+                actualState = runningState;
                 break;
             default:
                 Debug.Log("Non existent state");
-                ChangeState((int)PlayerStates.Walking);
+                ChangeState((int)PlayerStates.Idle);
                 break;
         }
+
+        actualState.EnterState();
     }
 }

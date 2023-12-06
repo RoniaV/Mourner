@@ -7,11 +7,14 @@ public class CharacterMovement : MonoBehaviour
 {
     [Header("Movement Settings")]
     [SerializeField] protected float velocity = 2f;
+    [SerializeField] protected float smoothTime = 0.3f;
 
     protected CharacterController charController;
 
     protected Vector3 movementDirection;
     protected float actualVelocity;
+    protected float desiredVelocity;
+    private float dampVel = 0;
 
     protected virtual void Awake()
     {
@@ -25,6 +28,9 @@ public class CharacterMovement : MonoBehaviour
 
     protected virtual void FixedUpdate()
     {
+        float smoothVel = desiredVelocity * movementDirection.magnitude;
+        actualVelocity = Mathf.SmoothDamp(actualVelocity, smoothVel, ref dampVel, smoothTime);
+
         charController.Move(movementDirection * actualVelocity * Time.fixedDeltaTime);
     }
 
@@ -33,17 +39,13 @@ public class CharacterMovement : MonoBehaviour
         movementDirection = direction;
     }
 
-    public void ModifyVelocity(float newVel, float time = 0)
+    public void SetVelocity(float newVel)
     {
-        actualVelocity = newVel != 0 ? newVel : velocity;
-
-        if (time != 0)
-            StartCoroutine(ModifiedVelocityCoroutine(time));
+        desiredVelocity = newVel;
     }
 
-    protected IEnumerator ModifiedVelocityCoroutine(float waitTime)
+    public void SetSmoothTime(float time)
     {
-        yield return new WaitForSeconds(waitTime);
-        actualVelocity = velocity;
+        smoothTime = time;
     }
 }
