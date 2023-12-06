@@ -5,8 +5,9 @@ using UnityEngine.InputSystem;
 
 public class PlayerRunning : State
 {
-    private Transform player;
     private RunSettings runSettings;
+    private PlayerControls playerControls;
+    private Transform player;
     private CharacterFloorMovement characterFloorMovement;
     private CharacterAim characterAim;
     private Transform camera;
@@ -18,14 +19,16 @@ public class PlayerRunning : State
     public PlayerRunning(
         FSM fSM,
         RunSettings walkSettings,
+        PlayerControls playerControls,
         Transform player,
         CharacterFloorMovement characterFloorMovement,
         CharacterAim characterAim,
         Transform camera
         ) : base(fSM)
     {
-        this.player = player;
         this.runSettings = walkSettings;
+        this.playerControls = playerControls;
+        this.player = player;
         this.characterFloorMovement = characterFloorMovement;
         this.characterAim = characterAim;
         this.camera = camera;
@@ -36,10 +39,6 @@ public class PlayerRunning : State
         Debug.Log("Enter Run State");
 
         characterFloorMovement.SetVelocity(runSettings.RunSpeed);
-
-        runSettings.WalkingAction.Enable();
-        runSettings.AimAction.Enable();
-        runSettings.RunAction.Enable();
     }
 
     public override void ExitState()
@@ -48,10 +47,6 @@ public class PlayerRunning : State
 
         smoothInputValue = Vector2.zero;
         smoothInputVelocity = Vector2.zero;
-
-        runSettings.WalkingAction.Disable();
-        runSettings.AimAction.Disable();
-        runSettings.RunAction.Disable();
     }
 
     public override void FixedUpdateState()
@@ -62,7 +57,7 @@ public class PlayerRunning : State
     public override void UpdateState()
     {
         //Get and smooth input
-        Vector3 inputValue = runSettings.WalkingAction.ReadValue<Vector2>();
+        Vector3 inputValue = playerControls.Gameplay.Move.ReadValue<Vector2>();
         smoothInputValue = Vector2.SmoothDamp(smoothInputValue, inputValue, ref smoothInputVelocity, runSettings.SmoothTime);
 
         //Transform input into movement diretion
@@ -74,7 +69,7 @@ public class PlayerRunning : State
         if (fixedDir != Vector3.zero)
             player.rotation = Quaternion.LookRotation(fixedDir, Vector3.up);
         characterFloorMovement.SetMovementDirection(fixedDir.normalized);
-        characterAim.RotateCharacter(runSettings.AimAction.ReadValue<Vector2>());
+        characterAim.RotateCharacter(playerControls.Gameplay.Aim.ReadValue<Vector2>());
 
 
         //Check for Idle transition  
@@ -83,7 +78,7 @@ public class PlayerRunning : State
             fSM.ChangeState((int)PlayerFSM.PlayerStates.Idle);
         }
         //Check for Walking transition
-        else if (!runSettings.RunAction.IsPressed())
+        else if (!playerControls.Gameplay.Run.IsPressed())
         {
             fSM.ChangeState((int)PlayerFSM.PlayerStates.Walking);
         }

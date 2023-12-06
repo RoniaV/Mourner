@@ -18,15 +18,11 @@ public class IKFootPlacement : MonoBehaviour
 
     Animator anim;
 
-    private CheckGrounded leftFootGrounded;
-    private CheckGrounded rightFootGrounded;
     private Vector3 bodyCV = Vector3.zero;
 
     void Awake() 
     {
         anim = GetComponent<Animator>();
-        leftFootGrounded = new CheckGrounded(leftFoot, walkableLayers, distanceToGround * 2, distanceToGround);
-        rightFootGrounded = new CheckGrounded(rightFoot, walkableLayers, distanceToGround * 2, distanceToGround);
     }
 
     private void OnAnimatorIK(int layerIndex) 

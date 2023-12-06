@@ -25,6 +25,7 @@ public class PlayerFSM : FSM
 
     CharacterController characterController;
     CharacterFloorMovement floorMovement;
+    PlayerControls playerControls;
 
     private State actualState;
     //States
@@ -37,6 +38,8 @@ public class PlayerFSM : FSM
     {
         floorMovement = GetComponent<CharacterFloorMovement>();
         characterController = GetComponent<CharacterController>();
+
+        playerControls = new PlayerControls();
     }
 
     void Start()
@@ -44,6 +47,7 @@ public class PlayerFSM : FSM
         idleState = new PlayerIdle(
             this,
             idleSettings,
+            playerControls,
             floorMovement,
             characterAim,
             characterAnimator
@@ -52,6 +56,7 @@ public class PlayerFSM : FSM
         walkingState = new PlayerWalking(
             this,
             walkSettings,
+            playerControls,
             transform,
             floorMovement,
             characterAim,
@@ -61,6 +66,7 @@ public class PlayerFSM : FSM
         runningState = new PlayerRunning(
             this,
             runSettings,
+            playerControls,
             transform,
             floorMovement,
             characterAim,
@@ -80,6 +86,16 @@ public class PlayerFSM : FSM
     {
         actualState?.UpdateState();
         characterAnimator.SetFloat("Vel", characterController.velocity.magnitude);
+    }
+
+    void OnEnable()
+    {
+        playerControls.Enable();
+    }
+
+    void OnDisable()
+    {
+        playerControls.Disable();
     }
 
     public override void ChangeState(int state)
