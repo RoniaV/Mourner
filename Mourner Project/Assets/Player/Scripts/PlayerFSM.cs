@@ -85,6 +85,9 @@ public class PlayerFSM : FSM
     void Update()
     {
         actualState?.UpdateState();
+
+        Vector3 fixedVel = characterController.velocity;
+        fixedVel.y = 0;
         characterAnimator.SetFloat("Vel", characterController.velocity.magnitude);
     }
 

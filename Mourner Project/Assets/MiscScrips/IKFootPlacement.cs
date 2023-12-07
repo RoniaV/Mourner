@@ -19,6 +19,7 @@ public class IKFootPlacement : MonoBehaviour
     Animator anim;
 
     private Vector3 bodyCV = Vector3.zero;
+    private float lastBodyHeight = 0;
 
     void Awake() 
     {
@@ -140,6 +141,9 @@ public class IKFootPlacement : MonoBehaviour
 
                     transform.position = 
                         Vector3.SmoothDamp(transform.position, fixedPosition, ref bodyCV, bodySmoothTime);
+
+                    //float smoothHeight = Mathf.SmoothDamp(transform.position.y, targetBodyHeight, ref bodyCV.y, bodySmoothTime);
+                    //transform.position = new Vector3(transform.position.x, smoothHeight, transform.position.z);
                 }
             }
 
@@ -152,6 +156,8 @@ public class IKFootPlacement : MonoBehaviour
             //else if(localPos.y < maxBodyHeight - maxFootDistance)
             //    localPos.y = maxBodyHeight - maxFootDistance;
             transform.localPosition = localPos;
+
+            lastBodyHeight = transform.position.y;
         }
     }
 
