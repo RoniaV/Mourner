@@ -88,7 +88,7 @@ public class PlayerFSM : FSM
 
         Vector3 fixedVel = characterController.velocity;
         fixedVel.y = 0;
-        characterAnimator.SetFloat("Vel", characterController.velocity.magnitude);
+        characterAnimator.SetFloat("Vel", floorMovement.ActualVelocity.magnitude);
     }
 
     void OnEnable()

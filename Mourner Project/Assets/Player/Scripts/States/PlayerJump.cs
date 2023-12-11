@@ -2,16 +2,29 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerJump : MonoBehaviour
+public class PlayerJump : State
 {
-    // Start is called before the first frame update
-    void Start()
+    public PlayerJump(FSM fSM) : base(fSM)
+    {
+
+    }
+
+    public override void EnterState()
     {
         
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void ExitState()
+    {
+        
+    }
+
+    public override void FixedUpdateState()
+    {
+        
+    }
+
+    public override void UpdateState()
     {
         
     }

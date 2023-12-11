@@ -5,6 +5,8 @@ using UnityEngine;
 [RequireComponent(typeof(CharacterController))]
 public class CharacterMovement : MonoBehaviour
 {
+    public Vector3 ActualVelocity { get { return movementDirection * actualVelocity; } }
+
     [Header("Movement Settings")]
     [SerializeField] protected float velocity = 2f;
     [SerializeField] protected float smoothTime = 0.3f;

@@ -1601,7 +1601,24 @@ MonoBehaviour:
   maxBodyHeight: -0.1
   maxFootDistance: 0.5
   distanceToGround: 0.07
-  bodySmoothTime: 0.1
+  bodySmoothTime: 0.05
+--- !u!114 &400517995
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 400517992}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 735c8bd7664d1d945bbcbbad80da632e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerCamera: {fileID: 963194228}
+  lookAtDistance: 100
+  body: {fileID: 400517991}
+  weightMultiplier: 1
+  weightOffset: 0.8
 --- !u!1 &426914702
 GameObject:
   m_ObjectHideFlags: 0
@@ -3528,7 +3545,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   velocity: 4
-  smoothTime: 0.2
+  smoothTime: 0.1
   maxSlope: 45
 --- !u!4 &1736342228
 Transform:
