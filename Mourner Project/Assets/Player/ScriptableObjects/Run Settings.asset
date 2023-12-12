@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f44da546c6f933f429ce5d820feda71e, type: 3}
   m_Name: Run Settings
   m_EditorClassIdentifier: 
-  runSpeed: 4
-  smoothTime: 0.2
+  runSpeed: 5
+  smoothTime: 0.1

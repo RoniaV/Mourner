@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Walk Settings
   m_EditorClassIdentifier: 
   walkSpeed: 2
-  smoothTime: 0.2
+  smoothTime: 0.1
