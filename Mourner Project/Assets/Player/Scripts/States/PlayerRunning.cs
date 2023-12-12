@@ -75,12 +75,16 @@ public class PlayerRunning : State
         //Check for Idle transition  
         if (inputValue.magnitude < 0.5f)
         {
-            fSM.ChangeState((int)PlayerFSM.PlayerStates.Idle);
+            fSM.ChangeState((int)PlayerStates.Idle);
         }
         //Check for Walking transition
         else if (!playerControls.Gameplay.Run.IsPressed())
         {
-            fSM.ChangeState((int)PlayerFSM.PlayerStates.Walking);
+            fSM.ChangeState((int)PlayerStates.Walking);
+        }
+        else if (playerControls.Gameplay.Jump.WasPressedThisFrame())
+        {
+            fSM.ChangeState((int)PlayerStates.Jump);
         }
     }
 }

@@ -31,7 +31,6 @@ public class HeadLookAtIK : MonoBehaviour
         //Set head look at weight
         float dot = Vector3.Dot(body.forward, playerCamera.forward);
         float weight = Mathf.Clamp01((dot + weightOffset) * weightMultiplier);
-        Debug.Log(weight);
         anim.SetLookAtWeight(weight);
     }
 }

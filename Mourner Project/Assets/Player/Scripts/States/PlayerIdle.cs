@@ -48,7 +48,11 @@ public class PlayerIdle : State
 
         if (playerControls.Gameplay.Move.ReadValue<Vector2>().magnitude > 0.5f)
         {
-            fSM.ChangeState((int)PlayerFSM.PlayerStates.Walking);
+            fSM.ChangeState((int)PlayerStates.Walking);
+        }
+        else if(playerControls.Gameplay.Jump.WasPressedThisFrame())
+        {
+            fSM.ChangeState((int)PlayerStates.Jump);
         }
     }
 }

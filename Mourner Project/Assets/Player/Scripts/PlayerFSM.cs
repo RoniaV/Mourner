@@ -3,16 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+public enum PlayerStates
+{
+    Idle,
+    Walking,
+    Running,
+    Jump
+}
+
 [RequireComponent(typeof(CharacterFloorMovement))]
 public class PlayerFSM : FSM
 {
-    public enum PlayerStates
-    {
-        Idle,
-        Walking,
-        Running
-    }
-
     [Header("Components")]
     [SerializeField] CharacterAim characterAim;
     [SerializeField] Transform playerCamera;
@@ -25,6 +26,8 @@ public class PlayerFSM : FSM
 
     CharacterController characterController;
     CharacterFloorMovement floorMovement;
+    CharacterJump characterJump;
+    CharacterGravitable characterGravitable;
     PlayerControls playerControls;
 
     private State actualState;
@@ -32,18 +35,22 @@ public class PlayerFSM : FSM
     private PlayerIdle idleState;
     private PlayerWalking walkingState;
     private PlayerRunning runningState;
+    private PlayerJump jumpState;
 
 
     void Awake()
     {
         floorMovement = GetComponent<CharacterFloorMovement>();
         characterController = GetComponent<CharacterController>();
+        characterJump = GetComponent<CharacterJump>();
+        characterGravitable = GetComponent<CharacterGravitable>();
 
         playerControls = new PlayerControls();
     }
 
     void Start()
     {
+        #region Initialize States
         idleState = new PlayerIdle(
             this,
             idleSettings,
@@ -73,6 +80,13 @@ public class PlayerFSM : FSM
             playerCamera
             );
 
+        jumpState = new PlayerJump(
+            this,
+            characterController,
+            characterJump,
+            characterGravitable
+            );
+        #endregion
 
         ChangeState((int)initialState);
     }
@@ -116,6 +130,9 @@ public class PlayerFSM : FSM
                 break;
             case (int)PlayerStates.Running:
                 actualState = runningState;
+                break;
+            case (int)PlayerStates.Jump:
+                actualState = jumpState;
                 break;
             default:
                 Debug.Log("Non existent state");

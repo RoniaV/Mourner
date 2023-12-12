@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(CharacterController))]
+[RequireComponent(typeof(CharacterController), typeof(CharacterMovement))]
 public class CharacterGravitable : MonoBehaviour
 {
     public bool isGrounded { get; private set; }
@@ -10,13 +10,15 @@ public class CharacterGravitable : MonoBehaviour
     [SerializeField] LayerMask groundLayer;
 
     private CharacterController characterController;
+    private CharacterMovement characterMovement;
     private CheckGrounded grounded;
 
-    private Vector3 characterVelocity;
+    private float characterVelocity;
 
     void Awake()
     {
         characterController = GetComponent<CharacterController>();
+        characterMovement = GetComponent<CharacterMovement>();
         grounded = new CheckGrounded(transform, groundLayer, characterController.skinWidth + 0.05f, characterController.radius);
     }
 
@@ -24,11 +26,11 @@ public class CharacterGravitable : MonoBehaviour
     {
         isGrounded = grounded.IsGrounded();
 
-        if (isGrounded && characterVelocity.y < 0)
-            characterVelocity = Vector3.zero;
+        if (isGrounded && characterVelocity < 0)
+            characterVelocity = 0;
         
-        characterVelocity.y += -9.8f * Time.fixedDeltaTime;
-        characterController.Move(characterVelocity * Time.fixedDeltaTime);
+        characterVelocity += -9.8f * Time.fixedDeltaTime;
+        characterMovement.SetVerticalVelocity(characterVelocity * Time.fixedDeltaTime);
     }
 
     void OnDrawGizmos()
@@ -38,7 +40,7 @@ public class CharacterGravitable : MonoBehaviour
 
     public void AddVerticalVelocity(float velocity)
     {
-        characterVelocity.y += velocity;
+        characterVelocity += velocity;
     }
 
     public RaycastHit GetGroundHit()

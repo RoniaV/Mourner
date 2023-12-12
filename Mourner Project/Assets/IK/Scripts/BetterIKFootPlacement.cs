@@ -7,19 +7,26 @@ public class BetterIKFootPlacement : MonoBehaviour
     [SerializeField] LayerMask walkableLayers;
     [SerializeField] Transform leftFoot;
     [SerializeField] Transform rightFoot;
-    [Tooltip("Maximum local altitude the body can be")]
-    [SerializeField] float maxBodyHeight = -0.1f;
+    [Header("Feet Settings")]
     [Tooltip("Maximum distance can be between feets")]
     [SerializeField] float maxFootDistance = 0.5f;
     [Tooltip("Distance from where the foot transform is to the lowest possible position of the foot.")]
     [Range(0, 1f)]
     [SerializeField] float distanceToGround = 0.1f;
+    [SerializeField] float footSmoothTime = 0.2f;
+    [Header("Body Settings")]
+    [Tooltip("Maximum local altitude the body can be")]
+    [SerializeField] float maxBodyHeight = -0.1f;
     [SerializeField] float bodySmoothTime = 0.5f;
 
     private Animator anim;
     private float bodyCV = 0;
     private float lastBodyHeight = 0;
-    private Vector3 lastLeftRPos = Vector3.zero;
+
+    private Vector3 leftFootRefVel = Vector3.zero;
+    private Vector3 rightFootRefVel = Vector3.zero;
+    private Vector3 leftDesiredPos = Vector3.zero;
+    private Vector3 rightDesiredPos = Vector3.zero;
 
     void Awake()
     {
@@ -37,8 +44,8 @@ public class BetterIKFootPlacement : MonoBehaviour
 
         transform.position = new Vector3(transform.position.x, lastBodyHeight, transform.position.z); ;
 
-        UpdateFootIK(AvatarIKGoal.LeftFoot, leftFoot);
-        UpdateFootIK(AvatarIKGoal.RightFoot, rightFoot);
+        UpdateFootIK(AvatarIKGoal.LeftFoot, leftFoot, true);
+        UpdateFootIK(AvatarIKGoal.RightFoot, rightFoot, false);
     }
 
     void LateUpdate()
@@ -59,7 +66,7 @@ public class BetterIKFootPlacement : MonoBehaviour
         lastBodyHeight = transform.position.y;
     }
 
-    private void UpdateFootIK(AvatarIKGoal goal, Transform foot)
+    private void UpdateFootIK(AvatarIKGoal goal, Transform foot, bool left)
     {
         float footWeight = anim.GetFloat($"IK{goal}Weight");
         RaycastHit hit;
@@ -82,7 +89,14 @@ public class BetterIKFootPlacement : MonoBehaviour
         if (Physics.Raycast(ray, out hit, Mathf.Infinity, walkableLayers))
         {
             Vector3 footDesiredPos = hit.point + Vector3.up * distanceToGround;
-            anim.SetIKPosition(goal, footDesiredPos);
+            if (left)
+                leftDesiredPos = footDesiredPos;
+            else
+                rightDesiredPos = footDesiredPos;
+
+            Vector3 refVel = left ? leftFootRefVel : rightFootRefVel;
+            Vector3 footSmoothPos = Vector3.SmoothDamp(foot.position, footDesiredPos, ref refVel, footSmoothTime);
+            anim.SetIKPosition(goal, footSmoothPos);
             Vector3 forward = Vector3.ProjectOnPlane(transform.forward, hit.normal);
             anim.SetIKRotation(goal, Quaternion.LookRotation(forward, hit.normal));
         }
@@ -90,6 +104,8 @@ public class BetterIKFootPlacement : MonoBehaviour
 
     void OnDrawGizmosSelected()
     {
-        // Your Gizmos drawing code (if needed)
+        Gizmos.color = Color.red;
+        Gizmos.DrawSphere(leftDesiredPos, 0.05f);
+        Gizmos.DrawSphere(rightDesiredPos, 0.05f);
     }
 }
