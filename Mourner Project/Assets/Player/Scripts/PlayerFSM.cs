@@ -17,7 +17,7 @@ public class PlayerFSM : FSM
     [Header("Components")]
     [SerializeField] CharacterAim characterAim;
     [SerializeField] Transform playerCamera;
-    [SerializeField] Animator characterAnimator;
+    [SerializeField] Animator animator;
     [Header("State Settings")]
     [SerializeField] PlayerStates initialState = PlayerStates.Idle;
     [SerializeField] IdleSettings idleSettings;
@@ -57,7 +57,7 @@ public class PlayerFSM : FSM
             playerControls,
             floorMovement,
             characterAim,
-            characterAnimator
+            animator
             );
 
         walkingState = new PlayerWalking(
@@ -84,7 +84,8 @@ public class PlayerFSM : FSM
             this,
             characterController,
             characterJump,
-            characterGravitable
+            characterGravitable,
+            animator
             );
         #endregion
 
@@ -102,7 +103,12 @@ public class PlayerFSM : FSM
 
         Vector3 fixedVel = characterController.velocity;
         fixedVel.y = 0;
-        characterAnimator.SetFloat("Vel", floorMovement.ActualVelocity.magnitude);
+        animator.SetFloat("Vel", floorMovement.ActualVelocity.magnitude);
+
+        if (characterController.velocity.y < -3 && !characterGravitable.isGrounded)
+            animator.SetBool("Fall", true);
+        else if (characterGravitable.isGrounded)
+            animator.SetBool("Fall", false);
     }
 
     void OnEnable()

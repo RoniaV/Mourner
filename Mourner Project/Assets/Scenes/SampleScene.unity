@@ -1370,6 +1370,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -5.264253
       objectReference: {fileID: 0}
+    - target: {fileID: 3853268898807207900, guid: 2f456ec4837db5e4bafe607f1f5f2f73, type: 3}
+      propertyPath: m_UpdateWhenOffscreen
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4747904710347621765, guid: 2f456ec4837db5e4bafe607f1f5f2f73, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 56.838284
@@ -1441,6 +1445,10 @@ PrefabInstance:
     - target: {fileID: 6000407479487422213, guid: 2f456ec4837db5e4bafe607f1f5f2f73, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 7.007516
+      objectReference: {fileID: 0}
+    - target: {fileID: 6148737315974723067, guid: 2f456ec4837db5e4bafe607f1f5f2f73, type: 3}
+      propertyPath: m_UpdateWhenOffscreen
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6341119541397085964, guid: 2f456ec4837db5e4bafe607f1f5f2f73, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -2061,7 +2069,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd6043bde05a7fc4cba197d06915c1e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Damping: {x: 1, y: 1, z: 1}
+  Damping: {x: 0, y: 0, z: 0}
   ShoulderOffset: {x: 0, y: 0, z: 0}
   VerticalArmLength: 0.4
   CameraSide: 1
@@ -2309,7 +2317,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterAim: {fileID: 1229677614}
   playerCamera: {fileID: 1229677613}
-  characterAnimator: {fileID: 380710720}
+  animator: {fileID: 0}
   initialState: 0
   idleSettings: {fileID: 11400000, guid: b5f431337252df648a8a52e82140a681, type: 2}
   walkSettings: {fileID: 11400000, guid: 855990c8915c56143b1b997cb1068db1, type: 2}
@@ -3109,7 +3117,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40bd01182887f43418260324f71f1cf1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 1736342228}
+  target: {fileID: 400517991}
   offset: {x: 0, y: 1, z: 0}
   localOffset: 1
 --- !u!1 &1246732089
@@ -3963,7 +3971,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1736342224}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3, y: 1, z: 3}
+  m_LocalPosition: {x: 3, y: 1.733, z: 3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3985,7 +3993,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterAim: {fileID: 1229677614}
   playerCamera: {fileID: 1229677613}
-  characterAnimator: {fileID: 400517993}
+  animator: {fileID: 400517993}
   initialState: 0
   idleSettings: {fileID: 11400000, guid: b5f431337252df648a8a52e82140a681, type: 2}
   walkSettings: {fileID: 11400000, guid: 855990c8915c56143b1b997cb1068db1, type: 2}

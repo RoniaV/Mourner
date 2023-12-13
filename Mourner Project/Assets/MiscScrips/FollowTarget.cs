@@ -8,7 +8,7 @@ public class FollowTarget : MonoBehaviour
     [SerializeField] Vector3 offset = Vector3.zero;
     [SerializeField] bool localOffset = true;
 
-    void Update()
+    void LateUpdate()
     {
         Vector3 followPos = localOffset ? target.TransformPoint(offset) : target.position + offset;
         transform.position = followPos;

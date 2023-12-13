@@ -48,14 +48,33 @@ public class BetterIKFootPlacement : MonoBehaviour
         UpdateFootIK(AvatarIKGoal.RightFoot, rightFoot, false);
     }
 
-    void LateUpdate()
+    void Update()
     {
-        // Calculate target body height based on the lowest foot position
-        float targetBodyHeight = Mathf.Min(leftFoot.position.y, rightFoot.position.y);
+        // Convert maxBodyHeight to world space
+        float worldMaxBodyHeight = transform.root.position.y + maxBodyHeight;
+
+        // Determine the target body height based on the lowest foot desired position
+        float lowestFootY = Mathf.Min(leftDesiredPos.y, rightDesiredPos.y);
+        Debug.Log("Lowest Foot Y: " + lowestFootY);
+
+        bool isInRange = IsFootPositionInRange();
+        Debug.Log("Is In Range: " + isInRange);
+
+        // Check if the lowest foot position is within the range
+        float targetBodyHeight;
+        if (isInRange)
+        {
+            targetBodyHeight = lowestFootY;
+        }
+        else
+        {
+            targetBodyHeight = worldMaxBodyHeight;
+        }
+        Debug.Log("Target Body Height: " + targetBodyHeight);
 
         // Smoothly adjust the current body height towards the target body height
         float smoothHeight = 
-            Mathf.SmoothDamp(transform.position.y, targetBodyHeight - distanceToGround, ref bodyCV, bodySmoothTime);
+            Mathf.SmoothDamp(transform.position.y, targetBodyHeight, ref bodyCV, bodySmoothTime);
         transform.position = new Vector3(transform.position.x, smoothHeight, transform.position.z);
 
         // Ensure local position is based on the foot positions
@@ -96,14 +115,49 @@ public class BetterIKFootPlacement : MonoBehaviour
 
             Vector3 refVel = left ? leftFootRefVel : rightFootRefVel;
             Vector3 footSmoothPos = Vector3.SmoothDamp(foot.position, footDesiredPos, ref refVel, footSmoothTime);
-            anim.SetIKPosition(goal, footSmoothPos);
+            anim.SetIKPosition(goal, footDesiredPos);
             Vector3 forward = Vector3.ProjectOnPlane(transform.forward, hit.normal);
             anim.SetIKRotation(goal, Quaternion.LookRotation(forward, hit.normal));
         }
     }
 
+    private bool IsFootPositionInRange()
+    {
+        // Convert maxBodyHeight to world space
+        float worldMaxBodyHeight = transform.root.position.y + maxBodyHeight;
+
+        float worldMinBodyHeight = worldMaxBodyHeight - maxFootDistance;
+
+        // Determine the lowest foot's world y-coordinate
+        float lowestFootY = Mathf.Min(leftDesiredPos.y, rightDesiredPos.y);
+
+        // Check if the lowest foot position is within the body's height range
+        return lowestFootY >= worldMinBodyHeight && lowestFootY <= worldMaxBodyHeight;
+    }
+
     void OnDrawGizmosSelected()
     {
+        if (!Application.isPlaying)
+            return;
+
+        // Convert maxBodyHeight and minBodyHeight (maxBodyHeight - maxFootDistance) to world space
+        float worldMaxBodyHeight = transform.root.position.y + maxBodyHeight;
+        float worldMinBodyHeight = worldMaxBodyHeight - maxFootDistance;
+
+        // Start and end points for the line in world space
+        Vector3 lineStart = new Vector3(transform.position.x, worldMaxBodyHeight, transform.position.z);
+        Vector3 lineEnd = new Vector3(transform.position.x, worldMinBodyHeight, transform.position.z);
+
+        // Set the color of the Gizmos line
+        Gizmos.color = Color.green;
+
+        // Draw the line
+        Gizmos.DrawLine(lineStart, lineEnd);
+
+        // Optionally, draw small spheres at the start and end points for better visibility
+        Gizmos.DrawSphere(lineStart, 0.05f); // Size of the sphere can be adjusted
+        Gizmos.DrawSphere(lineEnd, 0.05f);
+
         Gizmos.color = Color.red;
         Gizmos.DrawSphere(leftDesiredPos, 0.05f);
         Gizmos.DrawSphere(rightDesiredPos, 0.05f);

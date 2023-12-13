@@ -7,16 +7,19 @@ public class PlayerJump : State
     CharacterController characterController;
     CharacterJump characterJump;
     CharacterGravitable characterGravitable;
+    Animator animator;
 
     public PlayerJump(FSM fSM,
         CharacterController characterController,
         CharacterJump characterJump,
-        CharacterGravitable characterGravitable
+        CharacterGravitable characterGravitable,
+        Animator animator
         ) : base(fSM)
     {
         this.characterController = characterController;
         this.characterJump = characterJump;
         this.characterGravitable = characterGravitable;
+        this.animator = animator;
     }
 
     public override void EnterState()
@@ -24,6 +27,7 @@ public class PlayerJump : State
         Debug.Log("Enter Jump State");
 
         characterJump.OnLanded += CharacterLanded;
+        animator.SetTrigger("Jump");
         characterJump.Jump();
     }
 
