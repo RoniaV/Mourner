@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static Cinemachine.DocumentationSortingAttribute;
 
 public class BetterIKFootPlacement : MonoBehaviour
 {
@@ -21,7 +22,6 @@ public class BetterIKFootPlacement : MonoBehaviour
 
     private Animator anim;
     private float bodyCV = 0;
-    private float lastBodyHeight = 0;
 
     private Vector3 leftFootRefVel = Vector3.zero;
     private Vector3 rightFootRefVel = Vector3.zero;
@@ -33,16 +33,9 @@ public class BetterIKFootPlacement : MonoBehaviour
         anim = GetComponent<Animator>();
     }
 
-    void Start()
-    {
-        lastBodyHeight = transform.position.y;
-    }
-
     void OnAnimatorIK(int layerIndex)
     {
         if (anim == null) return;
-
-        transform.position = new Vector3(transform.position.x, lastBodyHeight, transform.position.z); ;
 
         UpdateFootIK(AvatarIKGoal.LeftFoot, leftFoot, true);
         UpdateFootIK(AvatarIKGoal.RightFoot, rightFoot, false);
@@ -81,8 +74,6 @@ public class BetterIKFootPlacement : MonoBehaviour
         Vector3 localPos = transform.localPosition;
         localPos.y = Mathf.Clamp(localPos.y, maxBodyHeight - maxFootDistance, maxBodyHeight);
         transform.localPosition = localPos;
-
-        lastBodyHeight = transform.position.y;
     }
 
     private void UpdateFootIK(AvatarIKGoal goal, Transform foot, bool left)
@@ -108,13 +99,19 @@ public class BetterIKFootPlacement : MonoBehaviour
         if (Physics.Raycast(ray, out hit, Mathf.Infinity, walkableLayers))
         {
             Vector3 footDesiredPos = hit.point + Vector3.up * distanceToGround;
-            if (left)
-                leftDesiredPos = footDesiredPos;
-            else
-                rightDesiredPos = footDesiredPos;
+            Vector3 footSmoothPos = footDesiredPos;
 
-            Vector3 refVel = left ? leftFootRefVel : rightFootRefVel;
-            Vector3 footSmoothPos = Vector3.SmoothDamp(foot.position, footDesiredPos, ref refVel, footSmoothTime);
+            if (left)
+            {
+                footSmoothPos = Vector3.SmoothDamp(foot.position, footDesiredPos, ref leftFootRefVel, footSmoothTime);
+                leftDesiredPos = footDesiredPos;
+            }
+            else
+            {
+                footSmoothPos = Vector3.SmoothDamp(foot.position, footDesiredPos, ref rightFootRefVel, footSmoothTime);
+                rightDesiredPos = footDesiredPos;
+            }
+            
             anim.SetIKPosition(goal, footDesiredPos);
             Vector3 forward = Vector3.ProjectOnPlane(transform.forward, hit.normal);
             anim.SetIKRotation(goal, Quaternion.LookRotation(forward, hit.normal));

@@ -1611,7 +1611,7 @@ MonoBehaviour:
   distanceToGround: 0.07
   footSmoothTime: 0.1
   maxBodyHeight: -0.1
-  bodySmoothTime: 0.05
+  bodySmoothTime: 0.3
 --- !u!114 &400517995
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2069,7 +2069,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd6043bde05a7fc4cba197d06915c1e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Damping: {x: 0, y: 0, z: 0}
+  Damping: {x: 1, y: 1, z: 1}
   ShoulderOffset: {x: 0, y: 0, z: 0}
   VerticalArmLength: 0.4
   CameraSide: 1
@@ -3929,7 +3929,7 @@ CharacterController:
   m_Height: 1.6
   m_Radius: 0.15
   m_SlopeLimit: 45
-  m_StepOffset: 0.5
+  m_StepOffset: 0.05
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0.8, z: 0}
