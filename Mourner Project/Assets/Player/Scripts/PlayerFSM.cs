@@ -82,9 +82,11 @@ public class PlayerFSM : FSM
 
         jumpState = new PlayerJump(
             this,
+            playerControls,
             characterController,
             characterJump,
             characterGravitable,
+            characterAim,
             animator
             );
         #endregion
@@ -105,9 +107,9 @@ public class PlayerFSM : FSM
         fixedVel.y = 0;
         animator.SetFloat("Vel", floorMovement.ActualVelocity.magnitude);
 
-        if (characterController.velocity.y < -3 && !characterGravitable.isGrounded)
+        if (characterController.velocity.y < -3 && !characterGravitable.IsGrounded)
             animator.SetBool("Fall", true);
-        else if (characterGravitable.isGrounded)
+        else if (characterGravitable.IsGrounded)
             animator.SetBool("Fall", false);
     }
 

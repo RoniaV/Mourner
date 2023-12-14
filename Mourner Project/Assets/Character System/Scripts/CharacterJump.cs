@@ -6,7 +6,7 @@ using UnityEngine;
 [RequireComponent(typeof(CharacterController), typeof(CharacterGravitable))]
 public class CharacterJump : MonoBehaviour
 {
-    public bool isJumping { get; private set; }
+    public bool IsJumping { get; private set; }
     public event Action OnJump;
     public event Action OnLanded;
 
@@ -29,26 +29,27 @@ public class CharacterJump : MonoBehaviour
     {
         if (doJump)
         {
-            Debug.Log("Jump Input pressed. Grounded: " + characterGravitable.isGrounded);
+            Debug.Log("Jump Input pressed. Grounded: " + characterGravitable.IsGrounded);
             doJump = false;
 
-            if (characterGravitable.isGrounded)
+            if (characterGravitable.IsGrounded)
             {
                 characterGravitable.AddVerticalVelocity(Mathf.Sqrt(jumpHeight * 9.8f));
-                isJumping = true;
+                IsJumping = true;
                 Debug.Log("Jump");
                 OnJump?.Invoke();
             }
         }
 
-        if(isJumping && characterController.velocity.y < 0)
+        if(IsJumping && characterController.velocity.y < -0.5f)
         {
+            Debug.Log("Vertical Velocity: " + characterController.velocity.y);
             isFaling = true;
         }
 
-        if (isFaling && characterGravitable.isGrounded)
+        if (isFaling && characterGravitable.IsGrounded)
         {
-            isJumping = false;
+            IsJumping = false;
             isFaling = false;
             Debug.Log("Landed");
             OnLanded?.Invoke();

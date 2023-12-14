@@ -5,7 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(CharacterController), typeof(CharacterMovement))]
 public class CharacterGravitable : MonoBehaviour
 {
-    public bool isGrounded { get; private set; }
+    public bool IsGrounded { get; private set; }
 
     [SerializeField] LayerMask groundLayer;
 
@@ -24,9 +24,9 @@ public class CharacterGravitable : MonoBehaviour
 
     void FixedUpdate()
     {
-        isGrounded = grounded.IsGrounded();
+        IsGrounded = grounded.IsGrounded();
 
-        if (isGrounded && characterVelocity < 0)
+        if (IsGrounded && characterVelocity < 0)
             characterVelocity = 0;
         
         characterVelocity += -9.8f * Time.fixedDeltaTime;
@@ -41,6 +41,7 @@ public class CharacterGravitable : MonoBehaviour
     public void AddVerticalVelocity(float velocity)
     {
         characterVelocity += velocity;
+        characterMovement.ResetVerticalVelocity();
     }
 
     public RaycastHit GetGroundHit()

@@ -23,8 +23,8 @@ public class BetterIKFootPlacement : MonoBehaviour
     private Animator anim;
     private float bodyCV = 0;
 
-    private Vector3 leftFootRefVel = Vector3.zero;
-    private Vector3 rightFootRefVel = Vector3.zero;
+    private float leftFootRefVel = 0;
+    private float rightFootRefVel = 0;
     private Vector3 leftDesiredPos = Vector3.zero;
     private Vector3 rightDesiredPos = Vector3.zero;
 
@@ -37,8 +37,8 @@ public class BetterIKFootPlacement : MonoBehaviour
     {
         if (anim == null) return;
 
-        UpdateFootIK(AvatarIKGoal.LeftFoot, leftFoot, true);
-        UpdateFootIK(AvatarIKGoal.RightFoot, rightFoot, false);
+        UpdateFootIK(AvatarIKGoal.LeftFoot, leftFoot, ref leftDesiredPos, ref leftFootRefVel);
+        UpdateFootIK(AvatarIKGoal.RightFoot, rightFoot, ref rightDesiredPos, ref rightFootRefVel);
     }
 
     void Update()
@@ -48,10 +48,10 @@ public class BetterIKFootPlacement : MonoBehaviour
 
         // Determine the target body height based on the lowest foot desired position
         float lowestFootY = Mathf.Min(leftDesiredPos.y, rightDesiredPos.y);
-        Debug.Log("Lowest Foot Y: " + lowestFootY);
+        //Debug.Log("Lowest Foot Y: " + lowestFootY);
 
         bool isInRange = IsFootPositionInRange();
-        Debug.Log("Is In Range: " + isInRange);
+        //Debug.Log("Is In Range: " + isInRange);
 
         // Check if the lowest foot position is within the range
         float targetBodyHeight;
@@ -63,7 +63,7 @@ public class BetterIKFootPlacement : MonoBehaviour
         {
             targetBodyHeight = worldMaxBodyHeight;
         }
-        Debug.Log("Target Body Height: " + targetBodyHeight);
+        //Debug.Log("Target Body Height: " + targetBodyHeight);
 
         // Smoothly adjust the current body height towards the target body height
         float smoothHeight = 
@@ -76,7 +76,7 @@ public class BetterIKFootPlacement : MonoBehaviour
         transform.localPosition = localPos;
     }
 
-    private void UpdateFootIK(AvatarIKGoal goal, Transform foot, bool left)
+    private void UpdateFootIK(AvatarIKGoal goal, Transform foot, ref Vector3 desiredPos, ref float footVel)
     {
         float footWeight = anim.GetFloat($"IK{goal}Weight");
         RaycastHit hit;
@@ -98,21 +98,12 @@ public class BetterIKFootPlacement : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit, Mathf.Infinity, walkableLayers))
         {
-            Vector3 footDesiredPos = hit.point + Vector3.up * distanceToGround;
-            Vector3 footSmoothPos = footDesiredPos;
+            desiredPos = hit.point + Vector3.up * distanceToGround;
+            Vector3 footSmoothPos = desiredPos;            
+            footSmoothPos.y = Mathf.SmoothDamp(foot.position.y, desiredPos.y, ref footVel, footSmoothTime);
+            anim.SetIKPosition(goal, desiredPos);
+            //Debug.Log($"{goal} Smooth Pos: " + footSmoothPos);
 
-            if (left)
-            {
-                footSmoothPos = Vector3.SmoothDamp(foot.position, footDesiredPos, ref leftFootRefVel, footSmoothTime);
-                leftDesiredPos = footDesiredPos;
-            }
-            else
-            {
-                footSmoothPos = Vector3.SmoothDamp(foot.position, footDesiredPos, ref rightFootRefVel, footSmoothTime);
-                rightDesiredPos = footDesiredPos;
-            }
-            
-            anim.SetIKPosition(goal, footDesiredPos);
             Vector3 forward = Vector3.ProjectOnPlane(transform.forward, hit.normal);
             anim.SetIKRotation(goal, Quaternion.LookRotation(forward, hit.normal));
         }
@@ -152,8 +143,8 @@ public class BetterIKFootPlacement : MonoBehaviour
         Gizmos.DrawLine(lineStart, lineEnd);
 
         // Optionally, draw small spheres at the start and end points for better visibility
-        Gizmos.DrawSphere(lineStart, 0.05f); // Size of the sphere can be adjusted
-        Gizmos.DrawSphere(lineEnd, 0.05f);
+        Gizmos.DrawSphere(lineStart, 0.01f); // Size of the sphere can be adjusted
+        Gizmos.DrawSphere(lineEnd, 0.01f);
 
         Gizmos.color = Color.red;
         Gizmos.DrawSphere(leftDesiredPos, 0.05f);
