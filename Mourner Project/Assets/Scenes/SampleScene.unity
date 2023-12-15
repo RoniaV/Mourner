@@ -1701,6 +1701,9 @@ MonoBehaviour:
   idleSettings: {fileID: 11400000, guid: b5f431337252df648a8a52e82140a681, type: 2}
   walkSettings: {fileID: 11400000, guid: 855990c8915c56143b1b997cb1068db1, type: 2}
   runSettings: {fileID: 11400000, guid: d6dc549f699e06a4dbcf9d378e1fd3bc, type: 2}
+  jumpSettings: {fileID: 0}
+  fallSettings: {fileID: 0}
+  fallTime: 1.5
 --- !u!4 &950512550
 Transform:
   m_ObjectHideFlags: 0
@@ -3439,7 +3442,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   velocity: 4
-  smoothTime: 0.1
+  smoothTime: 0.2
   maxSlope: 45
 --- !u!4 &1736342228
 Transform:
@@ -3476,6 +3479,9 @@ MonoBehaviour:
   idleSettings: {fileID: 11400000, guid: b5f431337252df648a8a52e82140a681, type: 2}
   walkSettings: {fileID: 11400000, guid: 855990c8915c56143b1b997cb1068db1, type: 2}
   runSettings: {fileID: 11400000, guid: d6dc549f699e06a4dbcf9d378e1fd3bc, type: 2}
+  jumpSettings: {fileID: 11400000, guid: cec9022261a39d3408a2365c7138aac9, type: 2}
+  fallSettings: {fileID: 11400000, guid: 25fd29aa6fa389d44ae82640cbd1a783, type: 2}
+  fallTime: 0.4
 --- !u!114 &1736342230
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3489,6 +3495,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   jumpHeight: 4
+  jumpCooldown: 0.1
 --- !u!1 &1764498054
 GameObject:
   m_ObjectHideFlags: 0

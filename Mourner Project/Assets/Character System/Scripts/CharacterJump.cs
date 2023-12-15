@@ -8,21 +8,31 @@ public class CharacterJump : MonoBehaviour
 {
     public bool IsJumping { get; private set; }
     public event Action OnJump;
-    public event Action OnLanded;
 
 
     [SerializeField] float jumpHeight = 4;
+    [SerializeField] float jumpCooldown = 0.5f;
 
     CharacterGravitable characterGravitable;
     CharacterController characterController;
 
     protected bool doJump;
-    protected bool isFaling;
+    private bool canJump = true;
 
     protected virtual void Awake()
     {
         characterGravitable = GetComponent<CharacterGravitable>();
         characterController = GetComponent<CharacterController>();
+    }
+
+    void OnEnable()
+    {
+        characterGravitable.OnLanded += Land;
+    }
+
+    void OnDisable()
+    {
+        characterGravitable.OnLanded -= Land;
     }
 
     void FixedUpdate()
@@ -32,32 +42,43 @@ public class CharacterJump : MonoBehaviour
             Debug.Log("Jump Input pressed. Grounded: " + characterGravitable.IsGrounded);
             doJump = false;
 
-            if (characterGravitable.IsGrounded)
+            if (characterGravitable.IsGrounded && !IsJumping && canJump)
             {
-                characterGravitable.AddVerticalVelocity(Mathf.Sqrt(jumpHeight * 9.8f));
-                IsJumping = true;
                 Debug.Log("Jump");
+                IsJumping = true;
+                canJump = false;
+
+                characterGravitable.AddVerticalVelocity(Mathf.Sqrt(jumpHeight * 9.8f));
+
                 OnJump?.Invoke();
             }
         }
+    }
 
-        if(IsJumping && characterController.velocity.y < -0.5f)
+    public bool Jump()
+    {
+        if(canJump)
         {
-            Debug.Log("Vertical Velocity: " + characterController.velocity.y);
-            isFaling = true;
+            doJump = true;
+            return true;
         }
+        else
+            return false;
+    }
 
-        if (isFaling && characterGravitable.IsGrounded)
+    private void Land()
+    {
+        if (IsJumping)
         {
             IsJumping = false;
-            isFaling = false;
-            Debug.Log("Landed");
-            OnLanded?.Invoke();
+            StartCoroutine(JumpCooldown());
         }
     }
 
-    public void Jump()
+    private IEnumerator JumpCooldown()
     {
-        doJump = true;
+        yield return new WaitForSeconds(jumpCooldown);
+        Debug.Log("Can Jump");
+        canJump = true;
     }
 }

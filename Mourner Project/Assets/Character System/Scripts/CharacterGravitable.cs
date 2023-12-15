@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,6 +7,7 @@ using UnityEngine;
 public class CharacterGravitable : MonoBehaviour
 {
     public bool IsGrounded { get; private set; }
+    public event Action OnLanded;
 
     [SerializeField] LayerMask groundLayer;
 
@@ -14,6 +16,7 @@ public class CharacterGravitable : MonoBehaviour
     private CheckGrounded grounded;
 
     private float characterVelocity;
+    private bool lastFrameGrounded;
 
     void Awake()
     {
@@ -31,6 +34,14 @@ public class CharacterGravitable : MonoBehaviour
         
         characterVelocity += -9.8f * Time.fixedDeltaTime;
         characterMovement.SetVerticalVelocity(characterVelocity * Time.fixedDeltaTime);
+
+        if (!lastFrameGrounded && IsGrounded)
+        {
+            Debug.Log("Landed");
+            OnLanded?.Invoke();
+        }
+
+        lastFrameGrounded = IsGrounded;
     }
 
     void OnDrawGizmos()
@@ -41,7 +52,6 @@ public class CharacterGravitable : MonoBehaviour
     public void AddVerticalVelocity(float velocity)
     {
         characterVelocity += velocity;
-        characterMovement.ResetVerticalVelocity();
     }
 
     public RaycastHit GetGroundHit()

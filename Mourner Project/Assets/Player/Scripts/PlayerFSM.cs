@@ -8,7 +8,8 @@ public enum PlayerStates
     Idle,
     Walking,
     Running,
-    Jump
+    Jump,
+    Fall
 }
 
 [RequireComponent(typeof(CharacterFloorMovement))]
@@ -23,6 +24,10 @@ public class PlayerFSM : FSM
     [SerializeField] IdleSettings idleSettings;
     [SerializeField] WalkSettings walkSettings;
     [SerializeField] RunSettings runSettings;
+    [SerializeField] JumpSettings jumpSettings;
+    [SerializeField] FallSettings fallSettings;
+    [Header("Variables")]
+    [SerializeField] float fallTime = 1.5f;
 
     CharacterController characterController;
     CharacterFloorMovement floorMovement;
@@ -36,7 +41,9 @@ public class PlayerFSM : FSM
     private PlayerWalking walkingState;
     private PlayerRunning runningState;
     private PlayerJump jumpState;
+    private PlayerFall fallState;
 
+    private float fallTimer = 0;
 
     void Awake()
     {
@@ -82,13 +89,28 @@ public class PlayerFSM : FSM
 
         jumpState = new PlayerJump(
             this,
+            jumpSettings,
             playerControls,
             characterController,
+            floorMovement,
             characterJump,
             characterGravitable,
             characterAim,
-            animator
+            animator,
+            playerCamera,
+            transform
             );
+
+        fallState = new PlayerFall(
+            this,
+            fallSettings,
+            playerControls,
+            transform,
+            floorMovement,
+            characterAim,
+            playerCamera,
+            characterGravitable,
+            animator);
         #endregion
 
         ChangeState((int)initialState);
@@ -107,10 +129,15 @@ public class PlayerFSM : FSM
         fixedVel.y = 0;
         animator.SetFloat("Vel", floorMovement.ActualVelocity.magnitude);
 
-        if (characterController.velocity.y < -3 && !characterGravitable.IsGrounded)
-            animator.SetBool("Fall", true);
-        else if (characterGravitable.IsGrounded)
-            animator.SetBool("Fall", false);
+        if(!characterGravitable.IsGrounded && actualState != fallState)
+        {
+            fallTimer += Time.deltaTime;
+
+            if(fallTimer >= fallTime && characterController.velocity.y < 0)
+                ChangeState((int)PlayerStates.Fall);
+        }
+        else
+            fallTimer = 0;
     }
 
     void OnEnable()
@@ -141,6 +168,9 @@ public class PlayerFSM : FSM
                 break;
             case (int)PlayerStates.Jump:
                 actualState = jumpState;
+                break;
+            case (int)PlayerStates.Fall:
+                actualState = fallState;
                 break;
             default:
                 Debug.Log("Non existent state");

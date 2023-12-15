@@ -18,7 +18,6 @@ public class CharacterMovement : MonoBehaviour
     protected float desiredVelocity;
     private float dampVel = 0;
     private float verticalVelocity;
-    private bool resetVerticalVelocity = false;
 
     protected virtual void Awake()
     {
@@ -36,12 +35,6 @@ public class CharacterMovement : MonoBehaviour
         actualVelocity = Mathf.SmoothDamp(actualVelocity, smoothVel, ref dampVel, smoothTime);
 
         Vector3 movement = movementDirection * actualVelocity * Time.fixedDeltaTime;
-        if (resetVerticalVelocity)
-        {
-            movement.y = 0;
-            resetVerticalVelocity = false;
-        }
-
         movement.y += verticalVelocity;
         
         charController.Move(movement);
@@ -60,12 +53,6 @@ public class CharacterMovement : MonoBehaviour
     public void SetVerticalVelocity(float velocity)
     {
         verticalVelocity = velocity;
-    }
-
-    public void ResetVerticalVelocity()
-    {
-        resetVerticalVelocity = true;
-        charController.SimpleMove(new Vector3(0, 0, 0));
     }
 
     public void SetSmoothTime(float time)
