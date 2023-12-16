@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Fall Settings
   m_EditorClassIdentifier: 
   fallSpeed: 2
-  smoothTime: 0.3
+  smoothTime: 0.1

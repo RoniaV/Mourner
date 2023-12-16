@@ -91,7 +91,7 @@ public class PlayerJump : State
         if (fixedDir != Vector3.zero)
             player.rotation = Quaternion.LookRotation(fixedDir, Vector3.up);
         characterFloorMovement.SetMovementDirection(fixedDir.normalized);
-
+        
         characterAim.RotateCharacter(playerControls.Gameplay.Aim.ReadValue<Vector2>());
     }
 

@@ -3481,7 +3481,7 @@ MonoBehaviour:
   runSettings: {fileID: 11400000, guid: d6dc549f699e06a4dbcf9d378e1fd3bc, type: 2}
   jumpSettings: {fileID: 11400000, guid: cec9022261a39d3408a2365c7138aac9, type: 2}
   fallSettings: {fileID: 11400000, guid: 25fd29aa6fa389d44ae82640cbd1a783, type: 2}
-  fallTime: 0.4
+  fallTime: 0.3
 --- !u!114 &1736342230
 MonoBehaviour:
   m_ObjectHideFlags: 0
