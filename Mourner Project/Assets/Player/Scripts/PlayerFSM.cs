@@ -73,8 +73,8 @@ public class PlayerFSM : FSM
             playerControls,
             transform,
             floorMovement,
-            characterAim,
-            playerCamera
+            playerCamera,
+            characterAim
             );
 
         runningState = new PlayerRunning(
@@ -83,22 +83,22 @@ public class PlayerFSM : FSM
             playerControls,
             transform,
             floorMovement,
-            characterAim,
-            playerCamera
+            playerCamera,
+            characterAim
             );
 
         jumpState = new PlayerJump(
             this,
             jumpSettings,
             playerControls,
-            characterController,
+            transform,
             floorMovement,
+            playerCamera,
             characterJump,
             characterGravitable,
             characterAim,
-            animator,
-            playerCamera,
-            transform
+            characterController,
+            animator
             );
 
         fallState = new PlayerFall(
@@ -107,8 +107,8 @@ public class PlayerFSM : FSM
             playerControls,
             transform,
             floorMovement,
-            characterAim,
             playerCamera,
+            characterAim,
             characterGravitable,
             animator);
         #endregion

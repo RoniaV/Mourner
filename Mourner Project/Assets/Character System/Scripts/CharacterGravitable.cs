@@ -39,6 +39,9 @@ public class CharacterGravitable : MonoBehaviour
         {
             Debug.Log("Landed");
             OnLanded?.Invoke();
+
+            if (characterVelocity > 0)
+                characterVelocity = 0;
         }
 
         lastFrameGrounded = IsGrounded;

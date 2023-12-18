@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2143dc4101493c46907cbbbd9faef3a, type: 3}
   m_Name: Jump Settings
   m_EditorClassIdentifier: 
-  jumpSpeed: 2
+  movementSpeed: 2
   smoothTime: 0.1
+  rotationSpeed: 13

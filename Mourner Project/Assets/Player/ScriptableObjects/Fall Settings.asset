@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f454b61b6c2dcf94899c4e26932d6e28, type: 3}
   m_Name: Fall Settings
   m_EditorClassIdentifier: 
-  fallSpeed: 2
+  movementSpeed: 2
   smoothTime: 0.1
+  rotationSpeed: 13

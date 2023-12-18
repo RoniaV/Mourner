@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1f65fb7386333e4dba7223b58e23887, type: 3}
   m_Name: Walk Settings
   m_EditorClassIdentifier: 
-  walkSpeed: 2
+  movementSpeed: 2
   smoothTime: 0.1
+  rotationSpeed: 13
