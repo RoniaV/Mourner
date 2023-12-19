@@ -1703,6 +1703,8 @@ MonoBehaviour:
   runSettings: {fileID: 11400000, guid: d6dc549f699e06a4dbcf9d378e1fd3bc, type: 2}
   jumpSettings: {fileID: 0}
   fallSettings: {fileID: 0}
+  crouchIdleSettings: {fileID: 0}
+  crouchWalkSettings: {fileID: 0}
   fallTime: 1.5
 --- !u!4 &950512550
 Transform:
@@ -3389,6 +3391,7 @@ GameObject:
   - component: {fileID: 1736342227}
   - component: {fileID: 1736342226}
   - component: {fileID: 1736342230}
+  - component: {fileID: 1736342232}
   - component: {fileID: 1736342225}
   m_Layer: 0
   m_Name: Player
@@ -3482,6 +3485,8 @@ MonoBehaviour:
   runSettings: {fileID: 11400000, guid: d6dc549f699e06a4dbcf9d378e1fd3bc, type: 2}
   jumpSettings: {fileID: 11400000, guid: cec9022261a39d3408a2365c7138aac9, type: 2}
   fallSettings: {fileID: 11400000, guid: 25fd29aa6fa389d44ae82640cbd1a783, type: 2}
+  crouchIdleSettings: {fileID: 0}
+  crouchWalkSettings: {fileID: 0}
   fallTime: 0.3
 --- !u!114 &1736342230
 MonoBehaviour:
@@ -3495,7 +3500,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3b06e29ef81e3c49af3b516a26f2aa0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpHeight: 4
+  jumpHeight: 2
   jumpCooldown: 0.1
 --- !u!114 &1736342231
 MonoBehaviour:
@@ -3510,6 +3515,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   walkableLayers:
+    serializedVersion: 2
+    m_Bits: 64
+--- !u!114 &1736342232
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1736342224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 697b66b6860e3bf4485523ea96e34eb9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  crouchedVelocity: 1
+  crouchHeight: 1
+  cooldown: 0.5
+  obstacleLayers:
     serializedVersion: 2
     m_Bits: 64
 --- !u!1 &1764498054

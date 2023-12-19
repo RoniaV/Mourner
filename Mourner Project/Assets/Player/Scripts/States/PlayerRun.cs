@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerRunning : MovementState
+public class PlayerRun : MovementState
 {
     private RunSettings runSettings;
     private CharacterAim characterAim;
 
-    public PlayerRunning(
+    public PlayerRun(
         FSM fSM,
         RunSettings runSettings,
         PlayerControls playerControls,

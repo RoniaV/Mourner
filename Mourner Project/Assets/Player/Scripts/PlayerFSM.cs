@@ -9,7 +9,9 @@ public enum PlayerStates
     Walking,
     Running,
     Jump,
-    Fall
+    Fall,
+    CrouchIdle,
+    CrouchWalk
 }
 
 [RequireComponent(typeof(CharacterFloorMovement))]
@@ -26,6 +28,8 @@ public class PlayerFSM : FSM
     [SerializeField] RunSettings runSettings;
     [SerializeField] JumpSettings jumpSettings;
     [SerializeField] FallSettings fallSettings;
+    [SerializeField] CrouchIdleSettings crouchIdleSettings;
+    [SerializeField] CrouchWalkSettings crouchWalkSettings;
     [Header("Variables")]
     [SerializeField] float fallTime = 1.5f;
 
@@ -33,15 +37,18 @@ public class PlayerFSM : FSM
     CharacterFloorMovement floorMovement;
     CharacterJump characterJump;
     CharacterGravitable characterGravitable;
+    CharacterCrouch characterCrouch;
     PlayerControls playerControls;
 
     private State actualState;
     //States
     private PlayerIdle idleState;
-    private PlayerWalking walkingState;
-    private PlayerRunning runningState;
+    private PlayerWalk walkingState;
+    private PlayerRun runningState;
     private PlayerJump jumpState;
     private PlayerFall fallState;
+    private CrouchIdle crouchIdleState;
+    private CrouchWalk crouchWalkState;
 
     private float fallTimer = 0;
 
@@ -51,6 +58,7 @@ public class PlayerFSM : FSM
         characterController = GetComponent<CharacterController>();
         characterJump = GetComponent<CharacterJump>();
         characterGravitable = GetComponent<CharacterGravitable>();
+        characterCrouch = GetComponent<CharacterCrouch>();
 
         playerControls = new PlayerControls();
     }
@@ -67,7 +75,7 @@ public class PlayerFSM : FSM
             animator
             );
 
-        walkingState = new PlayerWalking(
+        walkingState = new PlayerWalk(
             this,
             walkSettings,
             playerControls,
@@ -77,7 +85,7 @@ public class PlayerFSM : FSM
             characterAim
             );
 
-        runningState = new PlayerRunning(
+        runningState = new PlayerRun(
             this,
             runSettings,
             playerControls,
@@ -111,6 +119,26 @@ public class PlayerFSM : FSM
             characterAim,
             characterGravitable,
             animator);
+
+        crouchIdleState = new CrouchIdle(
+            this,
+            crouchIdleSettings,
+            playerControls,
+            floorMovement,
+            characterAim,
+            animator,
+            characterCrouch
+            );
+
+        crouchWalkState = new CrouchWalk(
+            this,
+            crouchWalkSettings,
+            playerControls,
+            transform,
+            floorMovement,
+            playerCamera,
+            characterAim,
+            characterCrouch);
         #endregion
 
         ChangeState((int)initialState);
@@ -171,6 +199,12 @@ public class PlayerFSM : FSM
                 break;
             case (int)PlayerStates.Fall:
                 actualState = fallState;
+                break;
+            case (int)PlayerStates.CrouchIdle:
+                actualState = crouchIdleState;
+                break;
+            case (int)PlayerStates.CrouchWalk:
+                actualState = crouchWalkState;
                 break;
             default:
                 Debug.Log("Non existent state");

@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class PlayerWalking : MovementState
+public class PlayerWalk : MovementState
 {
     private WalkSettings walkSettings;
     private CharacterAim characterAim;
 
-    public PlayerWalking( FSM fSM,
+    public PlayerWalk( FSM fSM,
         WalkSettings walkSettings,
         PlayerControls playerControls,
         Transform player,
