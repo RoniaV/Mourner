@@ -28,7 +28,6 @@ public class PlayerFall : MovementState
 
     public override void EnterState()
     {
-        base.EnterState();
         Debug.Log("Enter Fall State");
 
         animator.SetBool("Fall", true);
