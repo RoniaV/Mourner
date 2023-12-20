@@ -7,6 +7,7 @@ public class CrouchWalk : MovementState
     CrouchWalkSettings crouchWalkSettings;
     CharacterAim characterAim;
     CharacterCrouch characterCrouch;
+    Animator animator;
 
     public CrouchWalk(FSM fSM,
         CrouchWalkSettings crouchWalkSettings,
@@ -15,20 +16,24 @@ public class CrouchWalk : MovementState
         CharacterFloorMovement characterFloorMovement,
         Transform camera,
         CharacterAim characterAim,
-        CharacterCrouch characterCrouch) : base(fSM, crouchWalkSettings, playerControls, player, characterFloorMovement, camera)
+        CharacterCrouch characterCrouch,
+        Animator animator) : base(fSM, crouchWalkSettings, playerControls, player, characterFloorMovement, camera)
     {
         this.crouchWalkSettings = crouchWalkSettings;
         this.characterAim = characterAim;
         this.characterCrouch = characterCrouch;
+        this.animator = animator;
     }
 
     public override void EnterState()
     {
+        Debug.Log("Enter Crouch Walk State");
         base.EnterState();
     }
 
     public override void ExitState()
     {
+        Debug.Log("Exit Crouch Walk State");
         base.ExitState();
     }
 
@@ -43,16 +48,14 @@ public class CrouchWalk : MovementState
 
         characterAim.RotateCharacter(playerControls.Gameplay.Aim.ReadValue<Vector2>());
 
-        if (!playerControls.Gameplay.Crouch.IsPressed())
+        if (!playerControls.Gameplay.Crouch.IsPressed() && characterCrouch.Crouch())
         {
-            if (characterCrouch.Crouch())
-            {
-                fSM.ChangeState((int)PlayerStates.Idle);
-            }
+            animator.SetBool("Crouch", false);
+            fSM.ChangeState((int)PlayerStates.Idle);
         }
         else if (inputValue.magnitude < 0.5f)
         {
-            fSM.ChangeState((int)PlayerStates.Idle);
+            fSM.ChangeState((int)PlayerStates.CrouchIdle);
         }
     }
 }

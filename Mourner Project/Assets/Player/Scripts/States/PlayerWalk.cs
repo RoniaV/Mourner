@@ -58,5 +58,9 @@ public class PlayerWalk : MovementState
         {
             fSM.ChangeState((int)PlayerStates.Jump);
         }
+        else if (playerControls.Gameplay.Crouch.IsPressed())
+        {
+            fSM.ChangeState((int)PlayerStates.CrouchIdle);
+        }
     }
 }

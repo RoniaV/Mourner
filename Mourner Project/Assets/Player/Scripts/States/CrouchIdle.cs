@@ -32,12 +32,16 @@ public class CrouchIdle : State
     {
         Debug.Log("Enter Crouch Idle State");
 
-        if (!characterCrouch.Crouch())
+        if (!characterCrouch.Crouched)
         {
-            fSM.ChangeState((int)PlayerStates.Idle);
-            return;
+            if (!characterCrouch.Crouch())
+            {
+                fSM.ChangeState((int)PlayerStates.Idle);
+                return;
+            }
         }
 
+        animator.SetBool("Crouch", true);
         characterFloorMovement.SetVelocity(0);
     }
 
@@ -55,12 +59,10 @@ public class CrouchIdle : State
     {
         characterAim.RotateCharacter(playerControls.Gameplay.Aim.ReadValue<Vector2>());
 
-        if(!playerControls.Gameplay.Crouch.IsPressed())
+        if (!playerControls.Gameplay.Crouch.IsPressed() && characterCrouch.Crouch())
         {
-            if(characterCrouch.Crouch())
-            {
-                fSM.ChangeState((int)PlayerStates.Idle);
-            }
+            animator.SetBool("Crouch", false);
+            fSM.ChangeState((int)PlayerStates.Idle);
         }
         else if (playerControls.Gameplay.Move.ReadValue<Vector2>().magnitude > 0.5f)
         {

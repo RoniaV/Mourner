@@ -24,14 +24,14 @@ public class PlayerRun : MovementState
 
     public override void EnterState()
     {
-        base.EnterState();
         Debug.Log("Enter Run State");
+        base.EnterState();
     }
 
     public override void ExitState()
     {
-        base.ExitState();
         Debug.Log("Exit Run State");
+        base.ExitState();
     }
 
     public override void FixedUpdateState()

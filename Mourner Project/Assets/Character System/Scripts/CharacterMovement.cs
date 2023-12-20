@@ -42,11 +42,13 @@ public class CharacterMovement : MonoBehaviour
 
     public void SetMovementDirection(Vector3 direction)
     {
+        //Debug.Log("Set Movement Direction: " + direction);
         movementDirection = direction;
     }
 
     public void SetVelocity(float newVel)
     {
+        Debug.Log("Set Velocity: " + newVel);
         desiredVelocity = newVel;
     }
 

@@ -9,6 +9,8 @@ public class PlayerFall : MovementState
     private CharacterGravitable characterGravitable;
     private Animator animator;
 
+    private float smoothVelocity;
+
     public PlayerFall(FSM fSM,
         FallSettings fallSettings,
         PlayerControls playerControls,
@@ -30,6 +32,7 @@ public class PlayerFall : MovementState
     {
         Debug.Log("Enter Fall State");
 
+        smoothInputValue = playerControls.Gameplay.Move.ReadValue<Vector2>();
         animator.SetBool("Fall", true);
         characterGravitable.OnLanded += Land;
     }
@@ -50,6 +53,10 @@ public class PlayerFall : MovementState
     public override void UpdateState()
     {
         base.UpdateState();
+
+        characterFloorMovement.SetVelocity(
+            Mathf.SmoothDamp(characterFloorMovement.ActualVelocity.magnitude, 0, ref smoothVelocity, fallSettings.Inertia)
+            );
 
         characterAim.RotateCharacter(playerControls.Gameplay.Aim.ReadValue<Vector2>());
     }

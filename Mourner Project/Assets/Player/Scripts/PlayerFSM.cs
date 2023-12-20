@@ -105,7 +105,6 @@ public class PlayerFSM : FSM
             characterJump,
             characterGravitable,
             characterAim,
-            characterController,
             animator
             );
 
@@ -138,7 +137,8 @@ public class PlayerFSM : FSM
             floorMovement,
             playerCamera,
             characterAim,
-            characterCrouch);
+            characterCrouch,
+            animator);
         #endregion
 
         ChangeState((int)initialState);
@@ -153,8 +153,6 @@ public class PlayerFSM : FSM
     {
         actualState?.UpdateState();
 
-        Vector3 fixedVel = characterController.velocity;
-        fixedVel.y = 0;
         animator.SetFloat("Vel", floorMovement.ActualVelocity.magnitude);
 
         if(!characterGravitable.IsGrounded && actualState != fallState)

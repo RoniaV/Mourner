@@ -33,6 +33,7 @@ public class MovementState : State
 
     public override void EnterState()
     {
+        smoothInputValue = playerControls.Gameplay.Move.ReadValue<Vector2>();
         characterFloorMovement.SetVelocity(movSettings.MovSpeed);
     }
 
@@ -67,7 +68,7 @@ public class MovementState : State
             player.rotation = Quaternion.Slerp(player.rotation, targetRotation, Time.deltaTime * movSettings.RotationSpeed);
         }
 
-        characterFloorMovement.SetMovementDirection(fixedDir.normalized);
+        characterFloorMovement.SetMovementDirection(fixedDir);
     }
 
     //Turn based on dot product

@@ -6,11 +6,12 @@ using UnityEngine.EventSystems;
 public class PlayerJump : MovementState
 {
     JumpSettings jumpSettings;
-    CharacterController characterController;
     CharacterJump characterJump;
     CharacterGravitable characterGravitable;
     CharacterAim characterAim;
     Animator animator;
+
+    private float smoothVelocity;
 
     public PlayerJump(FSM fSM,
         JumpSettings jumpSettings,
@@ -21,12 +22,10 @@ public class PlayerJump : MovementState
         CharacterJump characterJump,
         CharacterGravitable characterGravitable,
         CharacterAim characterAim,
-        CharacterController characterController,
         Animator animator
         ) : base(fSM, jumpSettings, playerControls, player, characterFloorMovement, camera)
     {
         this.jumpSettings = jumpSettings;
-        this.characterController = characterController;
         this.characterJump = characterJump;
         this.characterGravitable = characterGravitable;
         this.characterAim = characterAim;
@@ -45,6 +44,7 @@ public class PlayerJump : MovementState
             return;
         }
 
+        smoothInputValue = playerControls.Gameplay.Move.ReadValue<Vector2>();
         animator.SetBool("Jump", true);
     }
 
@@ -65,7 +65,11 @@ public class PlayerJump : MovementState
     public override void UpdateState()
     {
         base.UpdateState();
-        
+
+        characterFloorMovement.SetVelocity(
+            Mathf.SmoothDamp(characterFloorMovement.ActualVelocity.magnitude, 0, ref smoothVelocity, jumpSettings.Inertia)
+            );
+
         characterAim.RotateCharacter(playerControls.Gameplay.Aim.ReadValue<Vector2>());
     }
 
