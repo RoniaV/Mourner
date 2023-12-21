@@ -102,10 +102,10 @@ public class PlayerFSM : FSM
             transform,
             floorMovement,
             playerCamera,
-            characterJump,
             characterGravitable,
             characterAim,
-            animator
+            animator,
+            characterJump
             );
 
         fallState = new PlayerFall(
@@ -115,8 +115,8 @@ public class PlayerFSM : FSM
             transform,
             floorMovement,
             playerCamera,
-            characterAim,
             characterGravitable,
+            characterAim,
             animator);
 
         crouchIdleState = new CrouchIdle(

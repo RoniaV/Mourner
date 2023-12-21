@@ -15,4 +15,4 @@ MonoBehaviour:
   movementSpeed: 2
   smoothTime: 0.1
   rotationSpeed: 13
-  inertia: 0.1
+  inertia: 0.05

@@ -1628,7 +1628,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 950512550}
-  - component: {fileID: 950512549}
   - component: {fileID: 950512548}
   - component: {fileID: 950512547}
   - component: {fileID: 950512546}
@@ -1687,30 +1686,6 @@ MonoBehaviour:
   velocity: 4
   smoothTime: 0.2
   maxSlope: 45
---- !u!114 &950512549
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 950512545}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 393ee80253087b34286247e9bd4ff360, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  characterAim: {fileID: 1229677614}
-  playerCamera: {fileID: 1229677613}
-  animator: {fileID: 0}
-  initialState: 0
-  idleSettings: {fileID: 11400000, guid: b5f431337252df648a8a52e82140a681, type: 2}
-  walkSettings: {fileID: 11400000, guid: 855990c8915c56143b1b997cb1068db1, type: 2}
-  runSettings: {fileID: 11400000, guid: d6dc549f699e06a4dbcf9d378e1fd3bc, type: 2}
-  jumpSettings: {fileID: 0}
-  fallSettings: {fileID: 0}
-  crouchIdleSettings: {fileID: 0}
-  crouchWalkSettings: {fileID: 0}
-  fallTime: 1.5
 --- !u!4 &950512550
 Transform:
   m_ObjectHideFlags: 0
