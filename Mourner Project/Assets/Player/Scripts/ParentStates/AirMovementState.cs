@@ -17,6 +17,7 @@ public class AirMovementState : State
     protected Vector2 smoothInputValue = Vector2.zero;
     protected Vector2 smoothInputVelocity;
     protected Vector3 movDirection = Vector3.zero;
+    protected Vector3 smoothDirVel = Vector3.zero;
     private float smoothVelocity;
 
     public AirMovementState(FSM fSM,
@@ -44,7 +45,9 @@ public class AirMovementState : State
     {
         characterGravitable.OnLanded += CharacterLanded;
 
-        smoothInputValue = characterFloorMovement.ActualVelocity.normalized;
+        smoothInputValue = playerControls.Gameplay.Move.ReadValue<Vector2>();
+        movDirection = characterFloorMovement.ActualVelocity.normalized;
+
         if (characterFloorMovement.ActualVelocity.magnitude <= 0.1f)
             characterFloorMovement.SetVelocity(movSettings.MovSpeed);
     }
@@ -68,27 +71,50 @@ public class AirMovementState : State
         inputValue = playerControls.Gameplay.Move.ReadValue<Vector2>();
         smoothInputValue = Vector2.SmoothDamp(smoothInputValue, inputValue, ref smoothInputVelocity, movSettings.SmoothTime);
 
-        // Transform input into movement direction
-        movDirection.x = smoothInputValue.x;
-        movDirection.z = smoothInputValue.y;
-        Vector3 fixedDir = camera.TransformDirection(movDirection);
+        //Transform input into movement direction
+        Vector3 fixedDir = camera.TransformDirection(new Vector3(smoothInputValue.x, 0, smoothInputValue.y));
+        movDirection = Vector3.SmoothDamp(movDirection, fixedDir, ref smoothDirVel, movSettings.Inertia);
 
         // Set movement direction
-        if (fixedDir != Vector3.zero)
+        if (movDirection != Vector3.zero)
         {
-            Quaternion targetRotation = Quaternion.LookRotation(fixedDir, Vector3.up);
+            Quaternion targetRotation = Quaternion.LookRotation(movDirection, Vector3.up);
 
             // Smoothly rotate towards the target rotation
             player.rotation = Quaternion.Slerp(player.rotation, targetRotation, Time.deltaTime * movSettings.RotationSpeed);
         }
 
-        characterFloorMovement.SetMovementDirection(fixedDir.normalized);
+        characterFloorMovement.SetMovementDirection(movDirection);
 
-        float smoothVel = characterFloorMovement.ActualVelocity.magnitude * smoothInputValue.magnitude;
 
-        characterFloorMovement.SetVelocity(
-            Mathf.SmoothDamp(characterFloorMovement.ActualVelocity.magnitude, smoothVel, ref smoothVelocity, movSettings.Inertia)
-            );
+        //Old logic
+        //// Get input
+        //inputValue = playerControls.Gameplay.Move.ReadValue<Vector2>();
+
+        //// Transform input into movement direction
+        //movDirection.x = inputValue.x;
+        //movDirection.z = inputValue.y;
+        //Vector3 fixedDir = camera.TransformDirection(movDirection);
+
+        ////Smooth input
+        //smoothInputValue = Vector2.SmoothDamp(smoothInputValue, fixedDir, ref smoothInputVelocity, movSettings.SmoothTime);
+
+        //// Set movement direction
+        //if (smoothInputValue != Vector2.zero)
+        //{
+        //    Quaternion targetRotation = Quaternion.LookRotation(smoothInputValue, Vector3.up);
+
+        //    // Smoothly rotate towards the target rotation
+        //    player.rotation = Quaternion.Slerp(player.rotation, targetRotation, Time.deltaTime * movSettings.RotationSpeed);
+        //}
+
+        //characterFloorMovement.SetMovementDirection(smoothInputValue);
+
+        //float smoothVel = characterFloorMovement.ActualVelocity.magnitude * smoothInputValue.magnitude;
+
+        //characterFloorMovement.SetVelocity(
+        //    Mathf.SmoothDamp(characterFloorMovement.ActualVelocity.magnitude, smoothVel, ref smoothVelocity, movSettings.Inertia)
+        //    );
 
         characterAim.RotateCharacter(playerControls.Gameplay.Aim.ReadValue<Vector2>());
     }

@@ -1671,6 +1671,7 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
+  gravity: 9.8
 --- !u!114 &950512548
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3703,6 +3704,7 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
+  gravity: -20
 --- !u!114 &1736342227
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -10,6 +10,7 @@ public class CharacterGravitable : MonoBehaviour
     public event Action OnLanded;
 
     [SerializeField] LayerMask groundLayer;
+    [SerializeField] float gravity = -9.8f;
 
     private CharacterController characterController;
     private CharacterMovement characterMovement;
@@ -32,7 +33,7 @@ public class CharacterGravitable : MonoBehaviour
         if (IsGrounded && characterVelocity < 0)
             characterVelocity = 0;
         
-        characterVelocity += -9.8f * Time.fixedDeltaTime;
+        characterVelocity += gravity * Time.fixedDeltaTime;
         characterMovement.SetVerticalVelocity(characterVelocity * Time.fixedDeltaTime);
 
         if (!lastFrameGrounded && IsGrounded)
