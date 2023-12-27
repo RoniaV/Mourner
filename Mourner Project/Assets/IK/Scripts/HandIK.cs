@@ -31,9 +31,9 @@ public class HandIK : MonoBehaviour
         Debug.Log("Hand IK Weight: " + weight);
     }
 
-    public void SetWeightGoal(float weight)
+    public void SetWeightGoal(float goal)
     {
-        weightGoal = weight;
+        weightGoal = goal;
 
         StopAllCoroutines();
         StartCoroutine(MoveHand());
@@ -41,7 +41,7 @@ public class HandIK : MonoBehaviour
 
     private IEnumerator MoveHand()
     {
-        while (Mathf.Abs(weightGoal - weight) > 0.01f)
+        while (Mathf.Abs(weightGoal - weight) > 0.001f)
         {
             weight = Mathf.SmoothDamp(weight, weightGoal, ref weightCurrentVel, armSpeed);
             Debug.Log("Hand IK Weight: " + weight);

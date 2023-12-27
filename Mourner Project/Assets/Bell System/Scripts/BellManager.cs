@@ -6,8 +6,34 @@ public class BellManager : MonoBehaviour
 {
     [SerializeField] HandIK handIK;
     [SerializeField] float movementSensitivity = 1f;
+    [Header("Hand Settings")]
+    [SerializeField] Transform handGoal;
+    [SerializeField] float maxHandMovement = 0.75f;
 
     private bool handOut = false;
+    private Vector3 originalHandPosition;
+    private float handDirection;
+
+    void Start()
+    {
+        originalHandPosition = handGoal.localPosition;
+    }
+
+    void Update()
+    {
+        if (handOut)
+        {
+            //Get local position
+            Vector3 handLocalPosition = handGoal.localPosition;
+            handLocalPosition.x += handDirection * movementSensitivity * Time.deltaTime;
+
+            //Clamp the positon
+            handLocalPosition.x = 
+                Mathf.Clamp(handLocalPosition.x, originalHandPosition.x - maxHandMovement, originalHandPosition.x + maxHandMovement);
+
+            handGoal.localPosition = handLocalPosition;
+        }
+    }
 
     public void PutHandOut()
     {
@@ -23,34 +49,42 @@ public class BellManager : MonoBehaviour
         handIK.SetWeightGoal(0f);
     }
 
+    public void MoveHand(Vector2 direction)
+    {
+        if(!handOut) return;
+
+
+        handDirection = direction.x;
+    }
+
     #region Test
-    private PlayerControls playerControls;
+    //private PlayerControls playerControls;
     
-    void Awake()
-    {
-        playerControls = new PlayerControls();
-    }
+    //void Awake()
+    //{
+    //    playerControls = new PlayerControls();
+    //}
 
-    void Update()
-    {
-        if(playerControls.Gameplay.BellOut.WasPressedThisFrame())
-        {
-            PutHandOut();
-        }
-        else if(playerControls.Gameplay.BellOut.WasReleasedThisFrame())
-        {
-            PutHandIn();
-        }
-    }
+    //void Update()
+    //{
+    //    if(playerControls.Gameplay.BellOut.WasPressedThisFrame())
+    //    {
+    //        PutHandOut();
+    //    }
+    //    else if(playerControls.Gameplay.BellOut.WasReleasedThisFrame())
+    //    {
+    //        PutHandIn();
+    //    }
+    //}
 
-    void OnEnable()
-    {
-        playerControls.Enable();
-    }
+    //void OnEnable()
+    //{
+    //    playerControls.Enable();
+    //}
 
-    void OnDisable()
-    {
-        playerControls.Disable();
-    }
+    //void OnDisable()
+    //{
+    //    playerControls.Disable();
+    //}
     #endregion
 }

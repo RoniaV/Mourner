@@ -2,65 +2,60 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerIdle : State
+public class BellIdle : State
 {
     private IdleSettings idleSettings;
     private PlayerControls playerControls;
     private CharacterFloorMovement characterFloorMovement;
     private CharacterAim characterAim;
+    private BellManager bellManager;
     private Animator animator;
 
 
-    public PlayerIdle( FSM fSM,
+    public BellIdle(FSM fSM,
         IdleSettings idleSettings,
         PlayerControls playerControls,
         CharacterFloorMovement characterFloorMovement,
         CharacterAim characterAim,
+        BellManager bellManager,
         Animator animator) : base(fSM)
     {
         this.idleSettings = idleSettings;
         this.playerControls = playerControls;
         this.characterFloorMovement = characterFloorMovement;
         this.characterAim = characterAim;
+        this.bellManager = bellManager;
         this.animator = animator;
     }
 
     public override void EnterState()
     {
-        Debug.Log("Enter Idle State");
+        Debug.Log("Enter Bell Idle State");
 
+        bellManager.PutHandOut();
         characterFloorMovement.SetVelocity(0);
+        characterAim.RotateCharacter(Vector2.zero);
     }
 
     public override void ExitState()
     {
-        Debug.Log("Exit Idle State");
+        Debug.Log("Exit Bell Idle State");
+
+        bellManager.PutHandIn();
     }
 
     public override void FixedUpdateState()
     {
-        
+
     }
 
     public override void UpdateState()
     {
-        characterAim.RotateCharacter(playerControls.Gameplay.Aim.ReadValue<Vector2>());
+        bellManager.MoveHand(playerControls.Gameplay.Aim.ReadValue<Vector2>());
 
-        if (playerControls.Gameplay.Move.ReadValue<Vector2>().magnitude > 0.5f)
+        if(playerControls.Gameplay.BellOut.WasReleasedThisFrame())
         {
-            fSM.ChangeState((int)PlayerStates.Walking);
-        }
-        else if(playerControls.Gameplay.Jump.WasPressedThisFrame())
-        {
-            fSM.ChangeState((int)PlayerStates.Jump);
-        }
-        else if(playerControls.Gameplay.Crouch.IsPressed())
-        {
-            fSM.ChangeState((int)PlayerStates.CrouchIdle);
-        }
-        else if(playerControls.Gameplay.BellOut.WasPressedThisFrame())
-        {
-            fSM.ChangeState((int)PlayerStates.BellIdle);
+            fSM.ChangeState((int)PlayerStates.Idle);
         }
     }
 }

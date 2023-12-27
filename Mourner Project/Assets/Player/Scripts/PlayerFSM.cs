@@ -11,7 +11,8 @@ public enum PlayerStates
     Jump,
     Fall,
     CrouchIdle,
-    CrouchWalk
+    CrouchWalk,
+    BellIdle
 }
 
 [RequireComponent(typeof(CharacterFloorMovement))]
@@ -38,6 +39,8 @@ public class PlayerFSM : FSM
     CharacterJump characterJump;
     CharacterGravitable characterGravitable;
     CharacterCrouch characterCrouch;
+    BellManager bellManager;
+
     PlayerControls playerControls;
 
     private State actualState;
@@ -49,6 +52,7 @@ public class PlayerFSM : FSM
     private PlayerFall fallState;
     private CrouchIdle crouchIdleState;
     private CrouchWalk crouchWalkState;
+    private BellIdle bellIdleState;
 
     private float fallTimer = 0;
 
@@ -59,6 +63,7 @@ public class PlayerFSM : FSM
         characterJump = GetComponent<CharacterJump>();
         characterGravitable = GetComponent<CharacterGravitable>();
         characterCrouch = GetComponent<CharacterCrouch>();
+        bellManager = GetComponent<BellManager>();
 
         playerControls = new PlayerControls();
     }
@@ -139,6 +144,15 @@ public class PlayerFSM : FSM
             characterAim,
             characterCrouch,
             animator);
+
+        bellIdleState = new BellIdle(
+            this,
+            idleSettings,
+            playerControls,
+            floorMovement,
+            characterAim,
+            bellManager,
+            animator);
         #endregion
 
         ChangeState((int)initialState);
@@ -203,6 +217,9 @@ public class PlayerFSM : FSM
                 break;
             case (int)PlayerStates.CrouchWalk:
                 actualState = crouchWalkState;
+                break;
+            case (int)PlayerStates.BellIdle:
+                actualState = bellIdleState;
                 break;
             default:
                 Debug.Log("Non existent state");
