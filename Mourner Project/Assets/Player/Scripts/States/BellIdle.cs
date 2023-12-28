@@ -9,6 +9,7 @@ public class BellIdle : State
     private CharacterFloorMovement characterFloorMovement;
     private CharacterAim characterAim;
     private BellManager bellManager;
+    private GameObject bellCamera;
     private Animator animator;
 
 
@@ -18,6 +19,7 @@ public class BellIdle : State
         CharacterFloorMovement characterFloorMovement,
         CharacterAim characterAim,
         BellManager bellManager,
+        GameObject bellCamera,
         Animator animator) : base(fSM)
     {
         this.idleSettings = idleSettings;
@@ -25,6 +27,7 @@ public class BellIdle : State
         this.characterFloorMovement = characterFloorMovement;
         this.characterAim = characterAim;
         this.bellManager = bellManager;
+        this.bellCamera = bellCamera;
         this.animator = animator;
     }
 
@@ -35,6 +38,7 @@ public class BellIdle : State
         bellManager.PutHandOut();
         characterFloorMovement.SetVelocity(0);
         characterAim.RotateCharacter(Vector2.zero);
+        bellCamera.SetActive(true);
     }
 
     public override void ExitState()
@@ -42,6 +46,7 @@ public class BellIdle : State
         Debug.Log("Exit Bell Idle State");
 
         bellManager.PutHandIn();
+        bellCamera.SetActive(false);
     }
 
     public override void FixedUpdateState()

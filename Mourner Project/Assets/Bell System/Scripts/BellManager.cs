@@ -9,6 +9,9 @@ public class BellManager : MonoBehaviour
     [Header("Hand Settings")]
     [SerializeField] Transform handGoal;
     [SerializeField] float maxHandMovement = 0.75f;
+    [Header("Bell Settings")]
+    [SerializeField] Transform bell;
+    [SerializeField] Rigidbody bellCyllinderRB;
 
     private bool handOut = false;
     private Vector3 originalHandPosition;
@@ -17,6 +20,10 @@ public class BellManager : MonoBehaviour
     void Start()
     {
         originalHandPosition = handGoal.localPosition;
+
+        bellCyllinderRB.centerOfMass = new Vector3(0, -0.26f, 0);
+        bellCyllinderRB.isKinematic = true;
+        bellCyllinderRB.transform.parent = bell;
     }
 
     void Update()
@@ -38,21 +45,28 @@ public class BellManager : MonoBehaviour
     public void PutHandOut()
     {
         Debug.Log("PutHandOut");
+
         handOut = true;
         handIK.SetWeightGoal(1f);
+
+        bellCyllinderRB.isKinematic = false;
+        bellCyllinderRB.transform.parent = null;
     }
 
     public void PutHandIn()
     {
         Debug.Log("PutHandIn");
+
         handOut = false;
         handIK.SetWeightGoal(0f);
+
+        bellCyllinderRB.isKinematic = true;
+        bellCyllinderRB.transform.parent = bell;
     }
 
     public void MoveHand(Vector2 direction)
     {
         if(!handOut) return;
-
 
         handDirection = direction.x;
     }

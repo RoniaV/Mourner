@@ -21,6 +21,7 @@ public class PlayerFSM : FSM
     [Header("Components")]
     [SerializeField] CharacterAim characterAim;
     [SerializeField] Transform playerCamera;
+    [SerializeField] GameObject bellCamera;
     [SerializeField] Animator animator;
     [Header("State Settings")]
     [SerializeField] PlayerStates initialState = PlayerStates.Idle;
@@ -152,6 +153,7 @@ public class PlayerFSM : FSM
             floorMovement,
             characterAim,
             bellManager,
+            bellCamera,
             animator);
         #endregion
 

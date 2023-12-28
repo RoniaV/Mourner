@@ -28,7 +28,7 @@ public class HandIK : MonoBehaviour
         animator.SetIKPositionWeight(AvatarIKGoal.RightHand, weight);
         animator.SetIKRotationWeight(AvatarIKGoal.RightHand, weight);
 
-        Debug.Log("Hand IK Weight: " + weight);
+        //Debug.Log("Hand IK Weight: " + weight);
     }
 
     public void SetWeightGoal(float goal)
@@ -44,7 +44,6 @@ public class HandIK : MonoBehaviour
         while (Mathf.Abs(weightGoal - weight) > 0.001f)
         {
             weight = Mathf.SmoothDamp(weight, weightGoal, ref weightCurrentVel, armSpeed);
-            Debug.Log("Hand IK Weight: " + weight);
 
             yield return null;
         }
