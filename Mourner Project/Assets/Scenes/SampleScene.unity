@@ -4873,11 +4873,29 @@ MonoBehaviour:
   m_UpdateMethod: 0
   m_BlendUpdateMethod: 1
   m_DefaultBlend:
-    m_Style: 1
-    m_Time: 2
+    m_Style: 7
+    m_Time: 1
     m_CustomCurve:
       serializedVersion: 2
-      m_Curve: []
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: -3.3872883
+        outSlope: -3.3872883
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.043666355
+      - serializedVersion: 3
+        time: 1
+        value: 0.009441376
+        inSlope: -0.03616775
+        outSlope: -0.03616775
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.20867312
+        outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
@@ -7273,7 +7291,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh25056
+  m_Name: pb_Mesh28522
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -7469,7 +7487,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh25354
+  m_Name: pb_Mesh28886
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
