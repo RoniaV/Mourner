@@ -17,7 +17,9 @@ public class CrouchWalk : MovementState
         Transform camera,
         CharacterAim characterAim,
         CharacterCrouch characterCrouch,
-        Animator animator) : base(fSM, crouchWalkSettings, playerControls, player, characterFloorMovement, camera)
+        Animator animator,
+        PlayerSoundManager soundManager
+        ) : base(fSM, crouchWalkSettings, playerControls, player, characterFloorMovement, camera, soundManager)
     {
         this.crouchWalkSettings = crouchWalkSettings;
         this.characterAim = characterAim;

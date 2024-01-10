@@ -10,6 +10,7 @@ public class MovementState : State
     protected Transform player;
     protected CharacterFloorMovement characterFloorMovement;
     protected Transform camera;
+    protected PlayerSoundManager soundManager;
 
     protected Vector2 inputValue = Vector2.zero;
     protected Vector2 smoothInputValue = Vector2.zero;
@@ -21,7 +22,8 @@ public class MovementState : State
         PlayerControls playerControls,
         Transform player,
         CharacterFloorMovement characterFloorMovement,
-        Transform camera
+        Transform camera,
+        PlayerSoundManager soundManager
         ) : base(fSM)
     {
         this.movSettings = movSettings;
@@ -29,10 +31,12 @@ public class MovementState : State
         this.player = player;
         this.characterFloorMovement = characterFloorMovement;
         this.camera = camera;
+        this.soundManager = soundManager;
     }
 
     public override void EnterState()
     {
+        soundManager.PlayFootstepSound();
         smoothInputValue = playerControls.Gameplay.Move.ReadValue<Vector2>();
         characterFloorMovement.SetVelocity(movSettings.MovSpeed);
     }
@@ -69,6 +73,8 @@ public class MovementState : State
         }
 
         characterFloorMovement.SetMovementDirection(fixedDir);
+
+        soundManager.SetActualVelocity(characterFloorMovement.ActualVelocity.magnitude);
     }
 
     //Turn based on dot product

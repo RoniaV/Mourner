@@ -23,6 +23,8 @@ public class PlayerFSM : FSM
     [SerializeField] Transform playerCamera;
     [SerializeField] GameObject bellCamera;
     [SerializeField] Animator animator;
+    [SerializeField] BellManager bellManager;
+    [SerializeField] PlayerSoundManager soundManager;
     [Header("State Settings")]
     [SerializeField] PlayerStates initialState = PlayerStates.Idle;
     [SerializeField] IdleSettings idleSettings;
@@ -40,7 +42,6 @@ public class PlayerFSM : FSM
     CharacterJump characterJump;
     CharacterGravitable characterGravitable;
     CharacterCrouch characterCrouch;
-    BellManager bellManager;
 
     PlayerControls playerControls;
 
@@ -64,7 +65,6 @@ public class PlayerFSM : FSM
         characterJump = GetComponent<CharacterJump>();
         characterGravitable = GetComponent<CharacterGravitable>();
         characterCrouch = GetComponent<CharacterCrouch>();
-        bellManager = GetComponent<BellManager>();
 
         playerControls = new PlayerControls();
     }
@@ -78,7 +78,8 @@ public class PlayerFSM : FSM
             playerControls,
             floorMovement,
             characterAim,
-            animator
+            animator,
+            soundManager
             );
 
         walkingState = new PlayerWalk(
@@ -88,7 +89,8 @@ public class PlayerFSM : FSM
             transform,
             floorMovement,
             playerCamera,
-            characterAim
+            characterAim,
+            soundManager
             );
 
         runningState = new PlayerRun(
@@ -98,7 +100,8 @@ public class PlayerFSM : FSM
             transform,
             floorMovement,
             playerCamera,
-            characterAim
+            characterAim,
+            soundManager
             );
 
         jumpState = new PlayerJump(
@@ -111,7 +114,8 @@ public class PlayerFSM : FSM
             characterGravitable,
             characterAim,
             animator,
-            characterJump
+            characterJump,
+            soundManager
             );
 
         fallState = new PlayerFall(
@@ -123,7 +127,9 @@ public class PlayerFSM : FSM
             playerCamera,
             characterGravitable,
             characterAim,
-            animator);
+            animator,
+            soundManager
+            );
 
         crouchIdleState = new CrouchIdle(
             this,
@@ -132,7 +138,8 @@ public class PlayerFSM : FSM
             floorMovement,
             characterAim,
             animator,
-            characterCrouch
+            characterCrouch,
+            soundManager
             );
 
         crouchWalkState = new CrouchWalk(
@@ -144,7 +151,9 @@ public class PlayerFSM : FSM
             playerCamera,
             characterAim,
             characterCrouch,
-            animator);
+            animator,
+            soundManager
+            );
 
         bellIdleState = new BellIdle(
             this,
@@ -154,7 +163,9 @@ public class PlayerFSM : FSM
             characterAim,
             bellManager,
             bellCamera,
-            animator);
+            animator,
+            soundManager
+            );
         #endregion
 
         ChangeState((int)initialState);

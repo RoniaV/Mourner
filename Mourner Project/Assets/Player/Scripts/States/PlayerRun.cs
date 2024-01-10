@@ -15,8 +15,9 @@ public class PlayerRun : MovementState
         Transform player,
         CharacterFloorMovement characterFloorMovement,
         Transform camera,
-        CharacterAim characterAim
-        ) : base(fSM, runSettings, playerControls, player, characterFloorMovement, camera)
+        CharacterAim characterAim,
+        PlayerSoundManager soundManager
+        ) : base(fSM, runSettings, playerControls, player, characterFloorMovement, camera, soundManager)
     {
         this.runSettings = runSettings;
         this.characterAim = characterAim;

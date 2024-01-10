@@ -10,6 +10,7 @@ public class CrouchIdle : State
     private CharacterAim characterAim;
     private Animator animator;
     private CharacterCrouch characterCrouch;
+    private PlayerSoundManager soundManager;
 
 
     public CrouchIdle(FSM fSM,
@@ -18,7 +19,8 @@ public class CrouchIdle : State
         CharacterFloorMovement characterFloorMovement,
         CharacterAim characterAim,
         Animator animator,
-        CharacterCrouch characterCrouch) : base(fSM)
+        CharacterCrouch characterCrouch,
+        PlayerSoundManager soundManager) : base(fSM)
     {
         this.crouchIdleSettings = crouchIdleSettings;
         this.playerControls = playerControls;
@@ -26,6 +28,7 @@ public class CrouchIdle : State
         this.characterAim = characterAim;
         this.animator = animator;
         this.characterCrouch = characterCrouch;
+        this.soundManager = soundManager;
     }
 
     public override void EnterState()
@@ -42,6 +45,7 @@ public class CrouchIdle : State
         }
 
         animator.SetBool("Crouch", true);
+        soundManager.StopFootstepSound();
         characterFloorMovement.SetVelocity(0);
     }
 

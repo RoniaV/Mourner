@@ -11,6 +11,7 @@ public class BellIdle : State
     private BellManager bellManager;
     private GameObject bellCamera;
     private Animator animator;
+    private PlayerSoundManager soundManager;
 
 
     public BellIdle(FSM fSM,
@@ -20,7 +21,9 @@ public class BellIdle : State
         CharacterAim characterAim,
         BellManager bellManager,
         GameObject bellCamera,
-        Animator animator) : base(fSM)
+        Animator animator,
+        PlayerSoundManager soundManager
+        ) : base(fSM)
     {
         this.idleSettings = idleSettings;
         this.playerControls = playerControls;
@@ -29,6 +32,7 @@ public class BellIdle : State
         this.bellManager = bellManager;
         this.bellCamera = bellCamera;
         this.animator = animator;
+        this.soundManager = soundManager;
     }
 
     public override void EnterState()

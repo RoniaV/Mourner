@@ -12,6 +12,7 @@ public class AirMovementState : State
     protected CharacterGravitable characterGravitable;
     protected CharacterAim characterAim;
     protected Animator animator;
+    protected PlayerSoundManager soundManager;
 
     protected Vector2 inputValue = Vector2.zero;
     protected Vector2 smoothInputValue = Vector2.zero;
@@ -28,7 +29,8 @@ public class AirMovementState : State
         Transform camera,
         CharacterGravitable characterGravitable,
         CharacterAim characterAim,
-        Animator animator
+        Animator animator,
+        PlayerSoundManager soundManager
         ) : base(fSM)
     {
         this.movSettings = movSettings;
@@ -39,6 +41,7 @@ public class AirMovementState : State
         this.characterGravitable = characterGravitable;
         this.characterAim = characterAim;
         this.animator = animator;
+        this.soundManager = soundManager;
     }
 
     public override void EnterState()
@@ -48,8 +51,10 @@ public class AirMovementState : State
         smoothInputValue = playerControls.Gameplay.Move.ReadValue<Vector2>();
         movDirection = characterFloorMovement.ActualVelocity.normalized;
 
-        if (characterFloorMovement.ActualVelocity.magnitude <= 0.1f)
-            characterFloorMovement.SetVelocity(movSettings.MovSpeed);
+        soundManager.StopFootstepSound();
+
+        //if (characterFloorMovement.ActualVelocity.magnitude <= 0.1f)
+        //    characterFloorMovement.SetVelocity(movSettings.MovSpeed);
     }
 
     public override void ExitState()
@@ -67,13 +72,15 @@ public class AirMovementState : State
 
     public override void UpdateState()
     {
-        // Get and smooth input
-        inputValue = playerControls.Gameplay.Move.ReadValue<Vector2>();
-        smoothInputValue = Vector2.SmoothDamp(smoothInputValue, inputValue, ref smoothInputVelocity, movSettings.SmoothTime);
+        //// Get and smooth input
+        //inputValue = playerControls.Gameplay.Move.ReadValue<Vector2>();
+        //smoothInputValue = Vector2.SmoothDamp(smoothInputValue, inputValue, ref smoothInputVelocity, movSettings.SmoothTime);
 
-        //Transform input into movement direction
-        Vector3 fixedDir = camera.TransformDirection(new Vector3(smoothInputValue.x, 0, smoothInputValue.y));
-        movDirection = Vector3.SmoothDamp(movDirection, fixedDir, ref smoothDirVel, movSettings.Inertia);
+        ////Transform input into movement direction
+        //Vector3 fixedDir = camera.TransformDirection(new Vector3(smoothInputValue.x, 0, smoothInputValue.y));
+        //movDirection = Vector3.SmoothDamp(movDirection, fixedDir, ref smoothDirVel, movSettings.Inertia);
+
+        movDirection = Vector3.SmoothDamp(movDirection, Vector3.zero, ref smoothDirVel, movSettings.Inertia);
 
         // Set movement direction
         if (movDirection != Vector3.zero)
@@ -86,8 +93,7 @@ public class AirMovementState : State
 
         characterFloorMovement.SetMovementDirection(movDirection);
 
-
-        //Old logic
+        #region Old Logic
         //// Get input
         //inputValue = playerControls.Gameplay.Move.ReadValue<Vector2>();
 
@@ -115,6 +121,7 @@ public class AirMovementState : State
         //characterFloorMovement.SetVelocity(
         //    Mathf.SmoothDamp(characterFloorMovement.ActualVelocity.magnitude, smoothVel, ref smoothVelocity, movSettings.Inertia)
         //    );
+        #endregion
 
         characterAim.RotateCharacter(playerControls.Gameplay.Aim.ReadValue<Vector2>());
     }
@@ -122,6 +129,7 @@ public class AirMovementState : State
     protected virtual void CharacterLanded()
     {
         animator.SetBool("Fall", false);
+        soundManager.PlaySound(PlayerSounds.Land);
         fSM.ChangeState((int)PlayerStates.Idle);
     }
 }

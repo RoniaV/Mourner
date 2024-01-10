@@ -14,8 +14,9 @@ public class PlayerWalk : MovementState
         Transform player,
         CharacterFloorMovement characterFloorMovement,
         Transform camera,
-        CharacterAim characterAim
-        ) : base(fSM, walkSettings, playerControls, player, characterFloorMovement, camera) 
+        CharacterAim characterAim,
+        PlayerSoundManager soundManager
+        ) : base(fSM, walkSettings, playerControls, player, characterFloorMovement, camera, soundManager) 
     {
         this.walkSettings = walkSettings;
         this.characterAim = characterAim;

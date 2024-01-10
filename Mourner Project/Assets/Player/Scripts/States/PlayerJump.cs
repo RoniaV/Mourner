@@ -19,8 +19,9 @@ public class PlayerJump : AirMovementState
         CharacterGravitable characterGravitable,
         CharacterAim characterAim,
         Animator animator,
-        CharacterJump characterJump
-        ) : base(fSM, jumpSettings, playerControls, player, characterFloorMovement, camera, characterGravitable, characterAim, animator)
+        CharacterJump characterJump,
+        PlayerSoundManager soundManager
+        ) : base(fSM, jumpSettings, playerControls, player, characterFloorMovement, camera, characterGravitable, characterAim, animator, soundManager)
     {
         this.jumpSettings = jumpSettings;
         this.characterJump = characterJump;
@@ -39,6 +40,7 @@ public class PlayerJump : AirMovementState
 
         base.EnterState();
         animator.SetBool("Jump", true);
+        soundManager.PlaySound(PlayerSounds.Jump);
     }
 
     public override void ExitState()

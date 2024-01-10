@@ -48,7 +48,7 @@ public class CharacterMovement : MonoBehaviour
 
     public void SetVelocity(float newVel)
     {
-        Debug.Log("Set Velocity: " + newVel);
+        //Debug.Log("Set Velocity: " + newVel);
         desiredVelocity = newVel;
     }
 

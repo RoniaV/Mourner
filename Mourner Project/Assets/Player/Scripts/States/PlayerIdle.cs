@@ -9,6 +9,7 @@ public class PlayerIdle : State
     private CharacterFloorMovement characterFloorMovement;
     private CharacterAim characterAim;
     private Animator animator;
+    private PlayerSoundManager soundManager;
 
 
     public PlayerIdle( FSM fSM,
@@ -16,13 +17,16 @@ public class PlayerIdle : State
         PlayerControls playerControls,
         CharacterFloorMovement characterFloorMovement,
         CharacterAim characterAim,
-        Animator animator) : base(fSM)
+        Animator animator,
+        PlayerSoundManager soundManager
+        ) : base(fSM)
     {
         this.idleSettings = idleSettings;
         this.playerControls = playerControls;
         this.characterFloorMovement = characterFloorMovement;
         this.characterAim = characterAim;
         this.animator = animator;
+        this.soundManager = soundManager;
     }
 
     public override void EnterState()

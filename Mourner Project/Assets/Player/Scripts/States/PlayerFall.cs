@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerFall : AirMovementState
 {
-    private FallSettings fallSettings;
+    FallSettings fallSettings;
 
 
     public PlayerFall(
@@ -16,8 +16,9 @@ public class PlayerFall : AirMovementState
         Transform camera,
         CharacterGravitable characterGravitable,
         CharacterAim characterAim,
-        Animator animator
-        ) : base(fSM, fallSettings, playerControls, player, characterFloorMovement, camera, characterGravitable, characterAim, animator)
+        Animator animator,
+        PlayerSoundManager soundManager 
+        ) : base(fSM, fallSettings, playerControls, player, characterFloorMovement, camera, characterGravitable, characterAim, animator, soundManager)
     {
         this.fallSettings = fallSettings;
     }
