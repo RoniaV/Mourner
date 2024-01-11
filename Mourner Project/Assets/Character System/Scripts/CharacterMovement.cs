@@ -6,6 +6,7 @@ using UnityEngine;
 public class CharacterMovement : MonoBehaviour
 {
     public Vector3 ActualVelocity { get { return movementDirection * actualVelocity; } }
+    public float VerticalVelocity { get { return verticalVelocity; } }
 
     [Header("Movement Settings")]
     [SerializeField] protected float velocity = 2f;

@@ -33,6 +33,7 @@ public class PlayerIdle : State
     {
         Debug.Log("Enter Idle State");
 
+        soundManager.StopFootstepSound();
         characterFloorMovement.SetVelocity(0);
     }
 

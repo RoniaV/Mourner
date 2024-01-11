@@ -128,8 +128,10 @@ public class AirMovementState : State
 
     protected virtual void CharacterLanded()
     {
+        if (characterFloorMovement.VerticalVelocity <= 0)
+            soundManager.PlaySound(PlayerSounds.Land);
+
         animator.SetBool("Fall", false);
-        soundManager.PlaySound(PlayerSounds.Land);
         fSM.ChangeState((int)PlayerStates.Idle);
     }
 }

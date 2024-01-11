@@ -20,7 +20,7 @@ public class PlayerSoundManager : MonoBehaviour
 
     AudioSource audioSource;
 
-    private float normalizedRatio { get { return (ratio * 1000) / 60; } }
+    private float normalizedRatio { get { return (ratio * 60) / 100; } }
 
     private bool footstepPlaying = false;
     private float actualRatio;
@@ -73,7 +73,7 @@ public class PlayerSoundManager : MonoBehaviour
     {
         while (true)
         {
-            Debug.Log("Play footstep sound");
+            //Debug.Log("Play footstep sound");
             int randomIndex = Random.Range(0, footstepSounds.Length);
             audioSource.PlayOneShot(footstepSounds[randomIndex]);
 
@@ -81,8 +81,10 @@ public class PlayerSoundManager : MonoBehaviour
             {
                 stepTimer += Time.deltaTime;
 
-                actualRatio = (actualVel * originalVel) / ratio;
-                Debug.Log("Actual ratio: " + actualRatio);
+                //Debug.Log("Normalized ratio: " + normalizedRatio);
+                actualRatio = (normalizedRatio * originalVel) / actualVel;
+                Debug.Log("Actual Velocity: " + actualVel);
+                //Debug.Log("Actual ratio: " + actualRatio);
 
                 yield return null;
             } while (stepTimer < actualRatio);

@@ -39,6 +39,7 @@ public class BellIdle : State
     {
         Debug.Log("Enter Bell Idle State");
 
+        soundManager.StopFootstepSound();
         bellManager.PutHandOut();
         characterFloorMovement.SetVelocity(0);
         characterAim.RotateCharacter(Vector2.zero);

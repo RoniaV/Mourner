@@ -47,6 +47,7 @@ public class CrouchWalk : MovementState
     public override void UpdateState()
     {
         base.UpdateState();
+        soundManager.SetActualVelocity(characterFloorMovement.ActualVelocity.magnitude * 2.2f);
 
         characterAim.RotateCharacter(playerControls.Gameplay.Aim.ReadValue<Vector2>());
 
