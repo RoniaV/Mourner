@@ -83,13 +83,13 @@ public class AirMovementState : State
         movDirection = Vector3.SmoothDamp(movDirection, Vector3.zero, ref smoothDirVel, movSettings.Inertia);
 
         // Set movement direction
-        if (movDirection != Vector3.zero)
-        {
-            Quaternion targetRotation = Quaternion.LookRotation(movDirection, Vector3.up);
+        //if (movDirection != Vector3.zero)
+        //{
+        //    Quaternion targetRotation = Quaternion.LookRotation(movDirection, Vector3.up);
 
-            // Smoothly rotate towards the target rotation
-            player.rotation = Quaternion.Slerp(player.rotation, targetRotation, Time.deltaTime * movSettings.RotationSpeed);
-        }
+        //    // Smoothly rotate towards the target rotation
+        //    player.rotation = Quaternion.Slerp(player.rotation, targetRotation, Time.deltaTime * movSettings.RotationSpeed);
+        //}
 
         characterFloorMovement.SetMovementDirection(movDirection);
 
