@@ -1,7 +1,7 @@
-Shader "Custom/ClipBox"
+Shader "Custom/ClipSpace"
 {
     Properties {
-        _radius("Size",Range(0.1,100)) = 5
+        //_radius ("Radius", float) = 3
         _MainTex ("Albedo (RGB)", 2D) = "white" {}
         _Glossiness ("Smoothness", Range(0,1)) = 0.5
         _Metallic ("Metallic", Range(0,1)) = 0.0
@@ -18,8 +18,9 @@ Shader "Custom/ClipBox"
         sampler2D _MainTex;
         half _Glossiness;
         half _Metallic;
-        float4 _WorldToBox;
+        float4 _worldCenter;
         float _radius;
+        float _toggle;
 
         struct Input {
             float2 uv_MainTex;
@@ -30,12 +31,14 @@ Shader "Custom/ClipBox"
             //float3 boxPosition = mul(_WorldToBox, float4(IN.worldPos, 1));
             // clip(boxPosition + 0.5);
             // clip(0.5 - boxPosition);
+            if(_toggle < 1) discard;
+
             clip (
                 _radius * _radius - (
-                    (_WorldToBox.x - IN.worldPos.x) * 
-                    (_WorldToBox.x - IN.worldPos.x) + 
-                    (_WorldToBox.z - IN.worldPos.z) * 
-                    (_WorldToBox.z - IN.worldPos.z)
+                    (_worldCenter.x - IN.worldPos.x) * 
+                    (_worldCenter.x - IN.worldPos.x) + 
+                    (_worldCenter.z - IN.worldPos.z) * 
+                    (_worldCenter.z - IN.worldPos.z)
                     ));
 
             fixed4 c = tex2D (_MainTex, IN.uv_MainTex);
