@@ -63,5 +63,10 @@ public class PlayerWalk : MovementState
         {
             fSM.ChangeState((int)PlayerStates.CrouchIdle);
         }
+        else if (playerControls.Gameplay.MoveBell.IsPressed()
+            && playerControls.Gameplay.BellOut.IsPressed())
+        {
+            fSM.ChangeState((int)PlayerStates.BellIdle);
+        }
     }
 }

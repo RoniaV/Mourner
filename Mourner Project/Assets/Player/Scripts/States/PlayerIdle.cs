@@ -63,7 +63,8 @@ public class PlayerIdle : State
         {
             fSM.ChangeState((int)PlayerStates.CrouchIdle);
         }
-        else if(playerControls.Gameplay.BellOut.WasPressedThisFrame())
+        else if(playerControls.Gameplay.MoveBell.IsPressed()
+            && playerControls.Gameplay.BellOut.IsPressed())
         {
             fSM.ChangeState((int)PlayerStates.BellIdle);
         }

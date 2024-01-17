@@ -61,5 +61,10 @@ public class PlayerRun : MovementState
         {
             fSM.ChangeState((int)PlayerStates.Jump);
         }
+        else if (playerControls.Gameplay.MoveBell.IsPressed()
+            && playerControls.Gameplay.BellOut.IsPressed())
+        {
+            fSM.ChangeState((int)PlayerStates.BellIdle);
+        }
     }
 }

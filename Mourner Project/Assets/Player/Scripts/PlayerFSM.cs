@@ -34,6 +34,7 @@ public class PlayerFSM : FSM
     [SerializeField] FallSettings fallSettings;
     [SerializeField] CrouchIdleSettings crouchIdleSettings;
     [SerializeField] CrouchWalkSettings crouchWalkSettings;
+    [SerializeField] BellIdleSettings bellIdleSettings;
     [Header("Variables")]
     [SerializeField] float fallTime = 1.5f;
 
@@ -157,14 +158,15 @@ public class PlayerFSM : FSM
 
         bellIdleState = new BellIdle(
             this,
-            idleSettings,
+            bellIdleSettings,
             playerControls,
             floorMovement,
             characterAim,
             bellManager,
             bellCamera,
             animator,
-            soundManager
+            soundManager,
+            transform
             );
         #endregion
 
@@ -178,6 +180,11 @@ public class PlayerFSM : FSM
 
     void Update()
     {
+        if (playerControls.Gameplay.BellOut.WasPressedThisFrame())
+            bellManager.PutHandOut();
+        else if (playerControls.Gameplay.BellOut.WasReleasedThisFrame())
+            bellManager.PutHandIn();
+
         actualState?.UpdateState();
 
         animator.SetFloat("Vel", floorMovement.ActualVelocity.magnitude);
@@ -205,8 +212,7 @@ public class PlayerFSM : FSM
 
     public override void ChangeState(int state)
     {
-        if (actualState != null)
-            actualState.ExitState();
+        actualState?.ExitState();
 
         switch (state)
         {
@@ -240,6 +246,6 @@ public class PlayerFSM : FSM
                 break;
         }
 
-        actualState.EnterState();
+        actualState?.EnterState();
     }
 }

@@ -80,6 +80,15 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MoveBell"",
+                    ""type"": ""Button"",
+                    ""id"": ""46de7b5e-e9a8-411b-880e-031409a1c0a2"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -192,6 +201,17 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""action"": ""BellOut"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""431063bb-81cd-4881-8d62-bf205961f64d"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MoveBell"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -206,6 +226,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         m_Gameplay_Jump = m_Gameplay.FindAction("Jump", throwIfNotFound: true);
         m_Gameplay_Crouch = m_Gameplay.FindAction("Crouch", throwIfNotFound: true);
         m_Gameplay_BellOut = m_Gameplay.FindAction("BellOut", throwIfNotFound: true);
+        m_Gameplay_MoveBell = m_Gameplay.FindAction("MoveBell", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -271,6 +292,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
     private readonly InputAction m_Gameplay_Jump;
     private readonly InputAction m_Gameplay_Crouch;
     private readonly InputAction m_Gameplay_BellOut;
+    private readonly InputAction m_Gameplay_MoveBell;
     public struct GameplayActions
     {
         private @PlayerControls m_Wrapper;
@@ -281,6 +303,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         public InputAction @Jump => m_Wrapper.m_Gameplay_Jump;
         public InputAction @Crouch => m_Wrapper.m_Gameplay_Crouch;
         public InputAction @BellOut => m_Wrapper.m_Gameplay_BellOut;
+        public InputAction @MoveBell => m_Wrapper.m_Gameplay_MoveBell;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -308,6 +331,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @BellOut.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnBellOut;
                 @BellOut.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnBellOut;
                 @BellOut.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnBellOut;
+                @MoveBell.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMoveBell;
+                @MoveBell.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMoveBell;
+                @MoveBell.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMoveBell;
             }
             m_Wrapper.m_GameplayActionsCallbackInterface = instance;
             if (instance != null)
@@ -330,6 +356,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @BellOut.started += instance.OnBellOut;
                 @BellOut.performed += instance.OnBellOut;
                 @BellOut.canceled += instance.OnBellOut;
+                @MoveBell.started += instance.OnMoveBell;
+                @MoveBell.performed += instance.OnMoveBell;
+                @MoveBell.canceled += instance.OnMoveBell;
             }
         }
     }
@@ -342,5 +371,6 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         void OnJump(InputAction.CallbackContext context);
         void OnCrouch(InputAction.CallbackContext context);
         void OnBellOut(InputAction.CallbackContext context);
+        void OnMoveBell(InputAction.CallbackContext context);
     }
 }

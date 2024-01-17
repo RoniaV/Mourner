@@ -19,34 +19,46 @@ public class VisionChanger : MonoBehaviour
     void OnEnable()
     {
         BellManager.OnBellRing += SetVision;
+        BellManager.OnHandIn += BackToIdle;
     }
 
     void OnDisable()
     {
         BellManager.OnBellRing -= SetVision;
+        BellManager.OnHandIn -= BackToIdle;
     }
 
     private void SetVision()
     {
         if(!On)
         {
+            On = true;
             lightAnimator.SetBool("Ring", true);
             clipSpace.enabled = true;
             //enviromentCamera.cullingMask |= 1 << LayerMask.NameToLayer(soulLayer);
             OnTurnOn?.Invoke();
         }
 
-        StopAllCoroutines();
-        StartCoroutine(BackToIdleCoroutine());
+        //StopAllCoroutines();
+        //StartCoroutine(BackToIdleCoroutine());
+    }
+
+    private void BackToIdle()
+    {
+        if(On)
+        {
+            On = false;
+            lightAnimator.SetBool("Ring", false);
+            clipSpace.enabled = false;
+            //enviromentCamera.cullingMask &= ~(1 << LayerMask.NameToLayer(soulLayer));
+            OnTurnOff?.Invoke();
+        }
     }
 
     private IEnumerator BackToIdleCoroutine()
     {
         yield return new WaitForSeconds(backTime);
 
-        lightAnimator.SetBool("Ring", false);
-        clipSpace.enabled = false;
-        //enviromentCamera.cullingMask &= ~(1 << LayerMask.NameToLayer(soulLayer));
-        OnTurnOff?.Invoke();
+        BackToIdle();
     }
 }

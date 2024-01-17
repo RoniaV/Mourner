@@ -166,8 +166,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.02, y: 0.2, z: 0.2}
-  m_Center: {x: -0.04, y: 0, z: 0}
+  m_Size: {x: 0.05, y: 0.2, z: 0.2}
+  m_Center: {x: -0.03, y: 0, z: 0}
 --- !u!1 &64282508
 GameObject:
   m_ObjectHideFlags: 0
@@ -420,8 +420,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.02, y: 0.2, z: 0.2}
-  m_Center: {x: 0.1, y: -0.15, z: 0}
+  m_Size: {x: 0.2, y: 0.2, z: 0.3}
+  m_Center: {x: 0.2, y: -0.15, z: 0}
 --- !u!1 &362654798
 GameObject:
   m_ObjectHideFlags: 0
@@ -1500,8 +1500,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.02, y: 0.2, z: 0.2}
-  m_Center: {x: -0.1, y: -0.15, z: 0}
+  m_Size: {x: 0.2, y: 0.19999999, z: 0.3}
+  m_Center: {x: -0.2, y: -0.15, z: 0}
 --- !u!1 &600778166
 GameObject:
   m_ObjectHideFlags: 0
@@ -7266,7 +7266,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 20
+  far clip plane: 30
   field of view: 60
   orthographic: 0
   orthographic size: 5
@@ -7328,17 +7328,17 @@ MonoBehaviour:
       - serializedVersion: 3
         time: 0
         value: 0
-        inSlope: 3.4485238
-        outSlope: 3.4485238
+        inSlope: 0
+        outSlope: 0
         tangentMode: 0
         weightedMode: 0
         inWeight: 0
-        outWeight: 0.06506849
+        outWeight: 0
       - serializedVersion: 3
         time: 1
         value: 1
-        inSlope: 0
-        outSlope: 0
+        inSlope: 2
+        outSlope: 2
         tangentMode: 0
         weightedMode: 0
         inWeight: 0
@@ -7673,7 +7673,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh25416
+  m_Name: pb_Mesh25468
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -7935,7 +7935,7 @@ MonoBehaviour:
     FieldOfView: 60
     OrthographicSize: 5
     NearClipPlane: 0.3
-    FarClipPlane: 20
+    FarClipPlane: 30
     Dutch: 0
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
@@ -7956,8 +7956,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1091618254}
-  m_LocalRotation: {x: 0.0593616, y: -0.3664003, z: 0.028769258, w: 0.928116}
-  m_LocalPosition: {x: 4.76805, y: 3.5580122, z: 1.4793503}
+  m_LocalRotation: {x: 0.065614805, y: -0.070161395, z: 0.004625065, w: 0.9953646}
+  m_LocalPosition: {x: 3.3639388, y: 3.5580304, z: 0.80926585}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -8008,8 +8008,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.02, y: 0.2, z: 0.2}
-  m_Center: {x: -0.1, y: -0.15, z: 0}
+  m_Size: {x: 0.07, y: 0.2, z: 0.2}
+  m_Center: {x: -0.12, y: -0.15, z: 0}
 --- !u!1 &1121945675
 GameObject:
   m_ObjectHideFlags: 0
@@ -8497,7 +8497,7 @@ MonoBehaviour:
     FieldOfView: 60
     OrthographicSize: 5
     NearClipPlane: 0.3
-    FarClipPlane: 20
+    FarClipPlane: 30
     Dutch: 0
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
@@ -9029,7 +9029,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   handIK: {fileID: 919132149420021304}
   checkCollision: {fileID: 698500220}
-  movementSensitivity: 0.5
+  movementSensitivity: 0.3
   handGoal: {fileID: 544899464}
   maxHandMovement: 0.15
   forwardMovMultiplier: 0.5
@@ -9231,6 +9231,24 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1305255674}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1308400117 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8790792795059081489, guid: 92643407b37d3e04593f331fabb4664a, type: 3}
+  m_PrefabInstance: {fileID: 2707172977287708454}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1308400119
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1308400117}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e45d2d60de8ea914885c730da416618a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 1229677613}
 --- !u!1 &1345595860
 GameObject:
   m_ObjectHideFlags: 0
@@ -9442,7 +9460,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh25918
+  m_Name: pb_Mesh25970
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -11082,7 +11100,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 1000
+  far clip plane: 30
   field of view: 60
   orthographic: 0
   orthographic size: 5
@@ -12214,6 +12232,7 @@ MonoBehaviour:
   fallSettings: {fileID: 11400000, guid: 25fd29aa6fa389d44ae82640cbd1a783, type: 2}
   crouchIdleSettings: {fileID: 11400000, guid: 3601565e56a57c846b3de0eae865cdfd, type: 2}
   crouchWalkSettings: {fileID: 11400000, guid: 97f4998a2b66f0d458140cb1ccbcefe1, type: 2}
+  bellIdleSettings: {fileID: 11400000, guid: 3b2d222af40d6e045ba5c1b0c444dd80, type: 2}
   fallTime: 0.3
 --- !u!114 &1736342230
 MonoBehaviour:
@@ -14165,7 +14184,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh25724
+  m_Name: pb_Mesh25776
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -14346,14 +14365,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1909796231}
-  m_LocalRotation: {x: 0.0593616, y: -0.3664003, z: 0.028769258, w: 0.928116}
+  m_LocalRotation: {x: 0.065614805, y: -0.070161395, z: 0.004625065, w: 0.9953646}
   m_LocalPosition: {x: 0, y: 1.078, z: 0.378}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1736342228}
   m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 7.543, y: -43.048, z: 0.572}
+  m_LocalEulerAnglesHint: {x: 7.543, y: -8.064, z: 0}
 --- !u!1 &1916213903
 GameObject:
   m_ObjectHideFlags: 0
@@ -14709,8 +14728,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.02, y: 0.2, z: 0.2}
-  m_Center: {x: -0.1, y: -0.15, z: 0}
+  m_Size: {x: 0.07, y: 0.2, z: 0.2}
+  m_Center: {x: -0.12, y: -0.15, z: 0}
 --- !u!1 &1997663818
 GameObject:
   m_ObjectHideFlags: 0
@@ -15164,7 +15183,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh25470
+  m_Name: pb_Mesh25522
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2

@@ -7,6 +7,8 @@ using UnityEngine;
 public class BellManager : MonoBehaviour
 {
     public static event Action OnBellRing;
+    public static event Action OnHandOut;
+    public static event Action OnHandIn;
 
     [SerializeField] HandIK handIK;
     [SerializeField] CheckCollisionForce checkCollision;
@@ -75,6 +77,7 @@ public class BellManager : MonoBehaviour
                 originalHandPosition.z - maxHandMovement * forwardMovMultiplier,
                 originalHandPosition.z + maxHandMovement * forwardMovMultiplier);
 
+            //Set hand goal local position
             handGoal.localPosition = handLocalPosition;
         }
     }
@@ -86,8 +89,7 @@ public class BellManager : MonoBehaviour
         handOut = true;
         handIK.SetWeightGoal(1f);
 
-        bellCyllinderRB.isKinematic = false;
-        bellCyllinderRB.transform.parent = null;
+        OnHandOut?.Invoke();
     }
 
     public void PutHandIn()
@@ -97,8 +99,22 @@ public class BellManager : MonoBehaviour
         handOut = false;
         handIK.SetWeightGoal(0f);
 
-        bellCyllinderRB.isKinematic = true;
-        bellCyllinderRB.transform.parent = bell;
+        OnHandIn?.Invoke();
+    }
+
+    public void SetBellActive(bool active)
+    {
+        if (active)
+        {
+            bellCyllinderRB.isKinematic = false;
+            bellCyllinderRB.transform.parent = null;
+        }
+        else
+        {
+            bellCyllinderRB.isKinematic = true;
+            bellCyllinderRB.transform.parent = bell;
+            bellCyllinderRB.transform.rotation = Quaternion.identity;
+        }
     }
 
     public void MoveHand(Vector2 direction)
