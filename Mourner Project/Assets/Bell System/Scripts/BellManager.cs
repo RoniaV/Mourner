@@ -39,8 +39,7 @@ public class BellManager : MonoBehaviour
         originalHandPosition = handGoal.localPosition;
 
         bellCyllinderRB.centerOfMass = new Vector3(0, -0.26f, 0);
-        bellCyllinderRB.isKinematic = true;
-        bellCyllinderRB.transform.parent = bell;
+        SetBellActive(false);
     }
 
     void OnEnable()
