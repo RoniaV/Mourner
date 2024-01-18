@@ -194,7 +194,6 @@ namespace MapMagic.Nodes.MatrixGenerators
 		[Val("Type")]		public FormType type = FormType.Cone;
 		[Val("Intensity")]	public float intensity = 1;
 		[Val("Scale")]		public float scale = 1;
-		[Val("Ratio")]		public float ratio = 1;
 		[Val("Offset")]		public Vector2 offset;
 		[Val("Wrap")]		public CoordRect.TileMode wrap = CoordRect.TileMode.Tile;
 
@@ -205,8 +204,7 @@ namespace MapMagic.Nodes.MatrixGenerators
 		public override void Generate (TileData data, StopToken stop) 
 		{
 			MatrixWorld matrix = new MatrixWorld(data.area.full.rect, data.area.full.worldPos, data.area.full.worldSize, data.globals.height);
-			Vector2D ratScale = ratio<1 ? new Vector2D(scale*ratio, scale) : new Vector2D(scale, scale*(2-ratio));
-			SimpleForm(matrix, (Vector2D)offset, ratScale * (Vector2D)data.area.active.worldSize, stop); //size is chunk-size relative
+			SimpleForm(matrix, (Vector2D)offset, scale * (Vector2D)data.area.active.worldSize, stop); //size is chunk-size relative
 			matrix.Clamp01();
 			data.StoreProduct(this, matrix);
 		}
@@ -214,6 +212,7 @@ namespace MapMagic.Nodes.MatrixGenerators
 		public void SimpleForm (MatrixWorld matrix, Vector2D formOffset, Vector2D formSize, StopToken stop=null)
 		{
 			Vector2D center = formSize/2 + formOffset;
+			float radius = Mathf.Min(formSize.x,formSize.z) / 2f;
 
 			Coord min = matrix.rect.Min; Coord max = matrix.rect.Max;
 
@@ -250,11 +249,7 @@ namespace MapMagic.Nodes.MatrixGenerators
 							val = valX<valZ? valX*2 : valZ*2;
 							break;
 						case FormType.Cone:
-							//float radius = Mathf.Min(formSize.x,formSize.z) / 2f;
-							//val = 1 - ((center-formPos).Magnitude)/radius;
-							Vector2D vec = 2*(center-formPos)/formSize;
-							float dist = vec.Magnitude;
-							val = 1  -  dist;  
+							val = 1 - ((center-formPos).Magnitude)/radius;
 							if (val<0) val = 0;
 							break;
 					}
