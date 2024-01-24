@@ -35,6 +35,12 @@ public class SetClipSpace : MonoBehaviour
 #endif
     }
 
+    public void SetRadius(float radius)
+    {
+        this.radius = radius;
+        Shader.SetGlobalFloat("_radius", radius);
+    }
+
     void OnDrawGizmosSelected()
     {
         if (on)

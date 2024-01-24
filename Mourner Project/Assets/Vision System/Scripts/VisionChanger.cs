@@ -12,9 +12,12 @@ public class VisionChanger : MonoBehaviour
 
     [SerializeField] Animator lightAnimator;
     [SerializeField] float backTime = 3f;
-    [SerializeField] SetClipSpace clipSpace;
     [SerializeField] Camera enviromentCamera;
     [SerializeField] string soulLayer = "Soul Light";
+    [Header("Clip Space Settings")]
+    [SerializeField] SetClipSpace clipSpace;
+    [SerializeField] float lightOnRadious = 3.5f;
+    [SerializeField] float lightOffRadious = 1.5f;
 
     void OnEnable()
     {
@@ -34,7 +37,8 @@ public class VisionChanger : MonoBehaviour
         {
             On = true;
             lightAnimator.SetBool("Ring", true);
-            clipSpace.enabled = true;
+            clipSpace.SetRadius(lightOnRadious);
+            //clipSpace.enabled = true;
             //enviromentCamera.cullingMask |= 1 << LayerMask.NameToLayer(soulLayer);
             OnTurnOn?.Invoke();
         }
@@ -49,7 +53,8 @@ public class VisionChanger : MonoBehaviour
         {
             On = false;
             lightAnimator.SetBool("Ring", false);
-            clipSpace.enabled = false;
+            clipSpace.SetRadius(lightOffRadious);
+            //clipSpace.enabled = false;
             //enviromentCamera.cullingMask &= ~(1 << LayerMask.NameToLayer(soulLayer));
             OnTurnOff?.Invoke();
         }
